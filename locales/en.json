@@ -1,0 +1,76 @@
+{
+  "system": {
+    "resourceNotFound": "Resource not found",
+    "imageTypeInvalid": "Image format not supported",
+    "imageMaxSize": "Image size too large, please choose another one"
+  },
+  "user": {
+    "notFound": "User not found",
+    "existsEmail": "Email already exists",
+    "findSuccess": "User found successfully",
+    "findListSuccess": "Find user list successfully",
+    "createSuccess": "User created successfully",
+    "updateSuccess": "User updated successfully",
+    "deleteSuccess": "User deleted successfully",
+    "incorrectId": "Incorrect MongoDB Id format",
+    "passwordLength": "Password must be longer than 8 characters",
+    "passwordInvalid": "Password must contain at least 1 letter and 1 number",
+    "emailInvalid": "Email is not in the correct format",
+    "roleInvalid": "This role is not valid",
+    "lockedSuccess": "User locked successfully",
+    "unlockedSuccess": "User unlocked successfully",
+    "userLocked": "Account locked",
+    "fullnameLength": "Full name must be between 3 and 50 characters",
+    "phoneLength": "Phone number must be between 5 and 12 characters"
+  },
+  "auth": {
+    "invalidLogin": "Invalid username or password",
+    "loginSuccess": "Login successfully",
+    "registerSuccess": "Register successfully",
+    "refreshTokenSuccess": "Refresh token successfully",
+    "invalidToken": "Invalid token",
+    "unauthorized": "Unauthorized",
+    "forbidden": "Forbidden",
+    "accountLocked": "Your account has been locked"
+  },
+  "product": {
+    "createSuccess": "Product created successfully",
+    "findListSuccess": "Product list retrieved successfully",
+    "findSuccess": "Product found successfully",
+    "updateSuccess": "Product updated successfully",
+    "deleteSuccess": "Product deleted successfully",
+    "notFound": "Product not found"
+  },
+  "category": {
+    "createSuccess": "Category created successfully",
+    "findListSuccess": "Category list retrieved successfully",
+    "findSuccess": "Category found successfully",
+    "updateSuccess": "Category updated successfully",
+    "deleteSuccess": "Category deleted successfully",
+    "notFound": "Category not found"
+  },
+  "manufacturer": {
+    "createSuccess": "manufacturer created successfully",
+    "findListSuccess": "manufacturer list retrieved successfully",
+    "findSuccess": "manufacturer found successfully",
+    "updateSuccess": "manufacturer updated successfully",
+    "deleteSuccess": "manufacturer deleted successfully",
+    "notFound": "manufacturer not found"
+  },
+  "address": {
+    "createSuccess": "address created successfully",
+    "findListSuccess": "address list retrieved successfully",
+    "findSuccess": "address found successfully",
+    "updateSuccess": "address updated successfully",
+    "deleteSuccess": "address deleted successfully",
+    "notFound": "address not found"
+  },
+  "cart": {
+    "createSuccess": "manufacturer created successfully",
+    "findListSuccess": "manufacturer list retrieved successfully",
+    "findSuccess": "manufacturer found successfully",
+    "updateSuccess": "manufacturer updated successfully",
+    "deleteSuccess": "manufacturer deleted successfully",
+    "notFound": "manufacturer not found"
+  }
+}

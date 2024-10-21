@@ -1,0 +1,10 @@
+module.exports.User = require('./user.model');
+module.exports.Product = require('./product.model');
+module.exports.Address = require('./address.model');
+module.exports.Cart = require('./cart.model');
+module.exports.CartDetail = require('./cart-detail.model');
+module.exports.Category = require('./category.model');
+module.exports.Comment = require('./comment.model');
+module.exports.Favorite = require('./favorite.model');
+module.exports.Manufacturer = require('./manufacturer.model');
+module.exports.Order = require('./order.model');

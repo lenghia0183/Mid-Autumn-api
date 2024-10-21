@@ -1,0 +1,12 @@
+module.exports.userController = require('./user.controller');
+module.exports.baseController = require('./base.controller');
+module.exports.authController = require('./auth.controller');
+module.exports.productController = require('./product.controller');
+module.exports.categoryController = require('./category.controller');
+module.exports.manufacturerController = require('./manufacturer.controller');
+module.exports.addressController = require('./address.controller');
+module.exports.cartController = require('./cart.controller');
+module.exports.favoriteController = require('./favorite.controller');
+module.exports.commentController = require('./comment.controller');
+module.exports.orderController = require('./order.controller');
+module.exports.paymentController = require('./payment.controller');

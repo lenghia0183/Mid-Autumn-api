@@ -1,0 +1,114 @@
+{
+  "system": {
+    "resourceNotFound": "Không tìm thấy tài nguyên",
+    "imageTypeInvalid": "Định dạng hình ảnh không hỗ trợ",
+    "imageMaxSize": "Hình ảnh có dung lượng quá lớn, vui lòng chọn lại"
+  },
+  "user": {
+    "notFound": "Không tìm thấy người dùng",
+    "existsEmail": "Email đã tồn tại",
+    "findSuccess": "Tìm thành công",
+    "findListSuccess": "Tìm danh sách người dùng thành công",
+    "createSuccess": "Tạo mới người dùng thành công",
+    "updateSuccess": "Cập nhật người dùng thành công",
+    "deleteSuccess": "Xóa người dùng thành công",
+    "incorrectId": "không đúng định dạng Id của MongoDB",
+    "passwordLength": "Mật khẩu lớn hơn 8 ký tự",
+    "passwordInvalid": "Mật khẩu phải chứa 1 ký tự và 1 số",
+    "emailInvalid": "Email không đúng định dạng",
+    "roleInvalid": "Chức vụ này không chính xác",
+    "lockedSuccess": "Khoá người dùng thành công",
+    "unlockedSuccess": "Mở khoá người dùng thành công",
+    "userLocked": "Tài khoản đã bị khoá",
+    "fullnameLength": "Họ tên từ 3 đến 50 ký tự",
+    "phoneLength": "Số điện thoại từ 8 đến 13 ký tự"
+  },
+  "auth": {
+    "invalidLogin": "Tài khoản hoặc mật khẩu không chính xác",
+    "loginSuccess": "Đăng nhập thành công",
+    "registerSuccess": "Đăng ký thanh công",
+    "refreshTokenSuccess": "Refresh token thành công",
+    "invalidToken": "Token không chính xác",
+    "unauthorized": "Bạn chưa đăng nhập",
+    "forbidden": "Bạn không có quyền truy cập",
+    "accountLocked": "Tài khoản của bạn đã bị khóa"
+  },
+  "product": {
+    "createSuccess": "Tạo sản phẩm mới thành công",
+    "findListSuccess": "Lấy danh sách sản phẩm thành công",
+    "findSuccess": "Tìm kiếm sản phẩm thành công",
+    "updateSuccess": "Cập nhật sản phẩm thành công",
+    "deleteSuccess": "Xóa sản phẩm thành công",
+    "notFound": "Không tìm thấy sản phẩm"
+  },
+  "category": {
+    "createSuccess": "Tạo thể loại mới thành công",
+    "findListSuccess": "Lấy danh sách thể loại thành công",
+    "findSuccess": "Tìm kiếm thể loại thành công",
+    "updateSuccess": "Cập nhật thể loại thành công",
+    "deleteSuccess": "Xóa thể loại thành công",
+    "notFound": "Không tìm thấy thể loại"
+  },
+  "manufacturer": {
+    "createSuccess": "Tạo thương hiệu mới thành công",
+    "findListSuccess": "Lấy danh sách thương hiệu thành công",
+    "findSuccess": "Tìm kiếm thương hiệu thành công",
+    "updateSuccess": "Cập nhật thương hiệu thành công",
+    "deleteSuccess": "Xóa thương hiệu thành công",
+    "notFound": "Không tìm thấy thương hiệu"
+  },
+  "address": {
+    "createSuccess": "Tạo địa chỉ mới thành công",
+    "findListSuccess": "Lấy danh sách địa chỉ thành công",
+    "findSuccess": "Tìm kiếm địa chỉ thành công",
+    "updateSuccess": "Cập nhật địa chỉ thành công",
+    "deleteSuccess": "Xóa địa chỉ thành công",
+    "notFound": "Không tìm thấy địa chỉ"
+  },
+  "cart": {
+    "addToCartSuccess": "Thêm sản phẩm vào giỏ hàng thành công",
+    "findListSuccess": "Lấy giỏ hàng thành công",
+    "clearCartSuccess": "Xóa tất cả sản phẩm trong giỏ hàng thành công",
+    "findSuccess": "Tìm kiếm thương hiệu thành công",
+    "updateSuccess": "Cập nhật giỏ hàng thành công",
+    "deleteSuccess": "Xóa sản phẩm khỏi giỏ hàng thành công",
+    "notFound": "Không tìm thấy sản phẩm trong giỏ hàng của bạn",
+    "maxQuantity": "Số lượng sản phẩm không được vượt quá 100"
+  },
+  "cartDetail": {
+    "findSuccess": "Tìm kiếm chi tiết giỏ thành công",
+    "updateSuccess": "Cập nhật chi tiết hàng thành công",
+    "deleteSuccess": "Xóa chi tiết giỏ hàng thành công",
+    "notFound": "Không tìm thấy sản phẩm trong giỏ hàng của bạn"
+  },
+  "favorite": {
+    "addToListSuccess": "Thêm sản phẩm vào danh sách yêu thích thành công",
+    "deleteSuccess": "Xóa sản phẩm khỏi danh sách yêu thích thành công",
+    "findListSuccess": "Lấy danh sách sản phẩm yêu thích thành công",
+    "findSuccess": "Tìm kiếm sản phẩm yêu thích thành công",
+    "clearSuccess": "Xóa tất danh sách yêu thích thành công",
+    "notFound": "Không tìm thấy sản phẩm yêu thích của bạn"
+  },
+  "comment": {
+    "createSuccess": "Thêm bình luận mới thành công",
+    "findListSuccess": "Lấy danh sách bình luận thành công",
+    "findSuccess": "Tìm kiếm bình luận thành công",
+    "updateSuccess": "Cập nhật bình luận thành công",
+    "deleteSuccess": "Xóa bình luận thành công",
+    "notFound": "Không tìm thấy bình luận",
+    "forbiddenUpdate": "Bạn không có quyền sửa bình luận này"
+  },
+  "order": {
+    "createSuccess": "Tạo đơn hàng mới thành công",
+    "findListSuccess": "Lấy danh sách đơn hàng thành công",
+    "updateSuccess": "Cập nhật đơn hàng thành công",
+    "notFound": "Không tìm thấy đơn hàng",
+    "canNotCancelOrder": "Bạn không thể hủy đơn hàng này vì nó không còn ở trạng thái chờ duyệt",
+    "forbidden": "Bạn không có quyền cập nhật trạng thái đơn hàng này",
+    "invalidCart": "Giỏ hàng không hợp lệ"
+  },
+  "payment": {
+    "paymentFailure": "Lỗi khi xử lý thanh toán.",
+    "paymentDescription": "{{userId}} - Thanh toán cho đơn hàng #{{orderId}}"
+  }
+}
