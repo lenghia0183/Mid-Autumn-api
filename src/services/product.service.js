@@ -103,7 +103,7 @@ const getProductByKeyWord = async (userId, requestQuery) => {
     if (maxPrice) {
       priceFilter.$lte = maxPrice;
     }
-    query.$and.push({ 'prices.price': priceFilter });
+    query.$and.push({ price: priceFilter });
   }
 
   if (minRating) {
@@ -113,7 +113,7 @@ const getProductByKeyWord = async (userId, requestQuery) => {
   const skip = +page <= 1 ? 0 : (+page - 1) * +limit;
 
   const products = await Product.find(query)
-    .select('name description images prices manufacturer category ratings')
+    .select('name description images price manufacturer category ratings')
     .populate([
       {
         path: 'manufacturerId',
