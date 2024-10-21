@@ -5,7 +5,6 @@ const addProductToCart = {
   body: Joi.object().keys({
     quantity: Joi.number().integer().min(1).required(),
     productId: Joi.string().custom(objectId).required(),
-    selectedWeight: Joi.string().valid('100g', '500g', '1kg').required(),
   }),
 };
 
@@ -24,7 +23,6 @@ const updateCartDetail = {
   body: Joi.object().keys({
     cartId: Joi.string().required().custom(objectId),
     quantity: Joi.number().integer().min(1),
-    selectedWeight: Joi.string().valid('100g', '500g', '1kg'),
   }),
 };
 

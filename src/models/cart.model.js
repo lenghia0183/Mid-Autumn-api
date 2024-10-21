@@ -39,9 +39,7 @@ cartSchema.statics.recalculateTotalMoney = async function (cartId) {
   let totalMoney = 0;
 
   cart.cartDetails.forEach((cartDetail) => {
-    const selectedPrice = cartDetail.productId.prices.find((price) => price.weight === cartDetail.selectedWeight).price;
-
-    totalMoney += cartDetail.quantity * selectedPrice;
+    totalMoney += cartDetail.quantity * cartDetail.productId.price;
   });
 
   cart.totalMoney = totalMoney;

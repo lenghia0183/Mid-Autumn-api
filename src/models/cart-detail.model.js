@@ -12,11 +12,6 @@ const cartDetailSchema = new mongoose.Schema(
       default: 1,
       required: true,
     },
-    selectedWeight: {
-      type: String,
-      enum: ['100g', '500g', '1kg'],
-      required: true,
-    },
     totalMoney: {
       type: Number,
       default: 0,

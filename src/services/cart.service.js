@@ -62,10 +62,6 @@ const addProductToCart = async (cartBody, userId) => {
 
   const product = await productService.getProductById(productId);
 
-  const selectedPrice = product.prices.find((priceOpt) => {
-    return priceOpt.weight === selectedWeight;
-  }).price;
-
   const cart = await Cart.findOne({ userId, status: 'active' }).populate([
     {
       path: 'cartDetails',
@@ -79,8 +75,7 @@ const addProductToCart = async (cartBody, userId) => {
     const newCartDetail = await CartDetail.create({
       productId,
       quantity,
-      selectedWeight,
-      totalMoney: quantity * selectedPrice,
+      totalMoney: quantity * product.price,
     });
     await Cart.create({
       userId,
@@ -92,7 +87,7 @@ const addProductToCart = async (cartBody, userId) => {
   }
 
   const cartDetail = cart?.cartDetails.find((cartDetail) => {
-    return cartDetail.productId.id.toString() === productId && cartDetail?.selectedWeight === selectedWeight;
+    return cartDetail.productId.id.toString() === productId;
   });
 
   if (cartDetail?.quantity + quantity > 100 || quantity > 100) {
@@ -101,15 +96,14 @@ const addProductToCart = async (cartBody, userId) => {
 
   if (cartDetail) {
     cartDetail.quantity += quantity;
-    cartDetail.totalMoney += quantity * selectedPrice;
-    cart.totalMoney += quantity * selectedPrice;
+    cartDetail.totalMoney += quantity * product.price;
+    cart.totalMoney += quantity * product.price;
     await cartDetail.save();
   } else {
     const newCartDetail = await CartDetail.create({
       productId,
       quantity,
-      selectedWeight,
-      totalMoney: quantity * selectedPrice,
+      totalMoney: quantity * product.price,
     });
     cart.cartDetails.push(newCartDetail._id);
     cart.totalMoney += newCartDetail?.totalMoney;
@@ -135,7 +129,7 @@ const deleteCartDetail = async (cartDetailId, cartId) => {
 };
 
 const updateCartDetail = async (cartDetailId, updateBody) => {
-  const { quantity, selectedWeight, cartId } = updateBody;
+  const { quantity, cartId } = updateBody;
   const cartDetail = await CartDetail.findOne({ _id: cartDetailId }).populate({
     path: 'productId',
   });
@@ -143,34 +137,10 @@ const updateCartDetail = async (cartDetailId, updateBody) => {
     throw new ApiError(httpStatus.NOT_FOUND, cartMessage().NOT_FOUND);
   }
 
-  const selectedPrice = cartDetail.productId.prices.find((priceOpt) => {
-    return priceOpt.weight === (selectedWeight || cartDetail.selectedWeight);
-  })?.price;
-  const totalMoney = (quantity || cartDetail.quantity) * (selectedPrice || cartDetail.selectedPrice);
-
-  const existingSameCartDetail = await CartDetail.findOne({
-    productId: cartDetail.productId._id,
-    selectedWeight: selectedWeight,
-    _id: { $ne: cartDetailId },
-  }).populate({
-    path: 'productId',
-  });
-
-  if (existingSameCartDetail) {
-    existingSameCartDetail.quantity += quantity || cartDetail.quantity;
-    existingSameCartDetail.totalMoney =
-      existingSameCartDetail.quantity * (selectedPrice || existingSameCartDetail.selectedPrice);
-
-    await existingSameCartDetail.save();
-
-    await CartDetail.deleteOne({ _id: cartDetailId });
-
-    return existingSameCartDetail;
-  }
+  const totalMoney = (quantity || cartDetail.quantity) * cartDetail.productId.price;
 
   cartDetail.set({
     quantity: quantity || cartDetail.quantity,
-    selectedWeight: selectedWeight || cartDetail.selectedWeight,
     totalMoney: totalMoney,
   });
   cartDetail.save();
