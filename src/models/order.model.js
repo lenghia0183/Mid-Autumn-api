@@ -16,6 +16,28 @@ const orderSchema = mongoose.Schema(
         required: true,
       },
     ],
+
+    buyerName: {
+      type: String,
+      required: true,
+    },
+    buyerEmail: {
+      type: String,
+      required: true,
+    },
+    buyerPhone: {
+      type: String,
+      required: true,
+    },
+    recipientName: {
+      type: String,
+      required: true,
+    },
+    recipientPhone: {
+      type: String,
+      required: true,
+    },
+
     address: {
       province: {
         type: provinceSchema,

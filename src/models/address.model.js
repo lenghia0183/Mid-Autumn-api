@@ -36,8 +36,8 @@ const wardSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    wardId: {
-      type: Number,
+    wardCode: {
+      type: String,
       required: true,
     },
   },

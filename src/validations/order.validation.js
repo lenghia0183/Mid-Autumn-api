@@ -5,6 +5,12 @@ const createOrder = {
   body: Joi.object().keys({
     cartId: Joi.string().custom(objectId),
 
+    buyerName: Joi.string().required(),
+    buyerEmail: Joi.string().required(),
+    buyerPhone: Joi.string().required(),
+    recipientName: Joi.string().required(),
+    recipientPhone: Joi.string().required(),
+
     address: Joi.object({
       province: Joi.object({
         provinceId: Joi.number().required(),
@@ -15,7 +21,7 @@ const createOrder = {
         districtName: Joi.string().required(),
       }).required(),
       ward: Joi.object({
-        wardId: Joi.number().required(),
+        wardCode: Joi.string().required(),
         wardName: Joi.string().required(),
       }).required(),
       street: Joi.string().required(),
@@ -75,6 +81,12 @@ const updateOrderById = {
   }),
   body: Joi.object()
     .keys({
+      buyerName: Joi.string().required(),
+      buyerEmail: Joi.string().required(),
+      buyerPhone: Joi.string().required(),
+      recipientName: Joi.string().required(),
+      recipientPhone: Joi.string().required(),
+
       address: Joi.object({
         province: Joi.object({
           provinceId: Joi.number(),
@@ -85,7 +97,7 @@ const updateOrderById = {
           districtName: Joi.string(),
         }),
         ward: Joi.object({
-          wardId: Joi.number(),
+          wardCode: Joi.string(),
           wardName: Joi.string(),
         }),
         street: Joi.string(),

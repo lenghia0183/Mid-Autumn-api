@@ -127,7 +127,20 @@ const getOrders = async (requestQuery) => {
 const createOrder = async (orderBody, userId) => {
   const paymentService = require('./payment.service');
 
-  const { cartId, addressId, note, paymentMethod, paymentGateway, address, shippingFee = 0 } = orderBody;
+  const {
+    cartId,
+    addressId,
+    note,
+    paymentMethod,
+    paymentGateway,
+    buyerName,
+    buyerEmail,
+    buyerPhone,
+    recipientName,
+    recipientPhone,
+    address,
+    shippingFee = 0,
+  } = orderBody;
 
   const cart = await Cart.findById(cartId);
 
@@ -145,6 +158,11 @@ const createOrder = async (orderBody, userId) => {
     paymentGateway: paymentMethod === 'Bank' ? paymentGateway : undefined,
     isPaid: paymentMethod === 'Bank' ? false : undefined,
     totalAmount: totalOrderMoney,
+    buyerName,
+    buyerEmail,
+    buyerPhone,
+    recipientName,
+    recipientPhone,
   });
 
   if (paymentGateway === 'MoMo') {
