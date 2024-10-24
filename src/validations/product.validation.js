@@ -4,6 +4,7 @@ const { objectId } = require('./custom.validation');
 const createProduct = {
   body: Joi.object().keys({
     name: Joi.string().required(),
+    code: Joi.string().required(),
     price: Joi.number().required(),
     description: Joi.string().allow(null, ''),
     images: Joi.array().items(Joi.string()).allow(null, ''),
@@ -14,16 +15,16 @@ const createProduct = {
 
 const getProducts = {
   query: Joi.object().keys({
-    keyword: Joi.string(),
-    sortBy: Joi.string(),
-    limit: Joi.number().integer(),
-    page: Joi.number().integer(),
-    minPrice: Joi.number().integer(),
-    maxPrice: Joi.number().integer(),
-    categoryId: Joi.string().custom(objectId),
-    manufacturerId: Joi.string().custom(objectId),
-    minRating: Joi.number().integer().min(0).max(5),
-    lang: Joi.string(),
+    keyword: Joi.string().allow(null, ''),
+    sortBy: Joi.string().allow(null, ''),
+    limit: Joi.number().integer().allow(null, ''),
+    page: Joi.number().integer().allow(null, ''),
+    minPrice: Joi.number().integer().allow(null, ''),
+    maxPrice: Joi.number().integer().allow(null, ''),
+    categoryId: Joi.string().custom(objectId).allow(null, ''),
+    manufacturerId: Joi.string().custom(objectId).allow(null, ''),
+    minRating: Joi.number().integer().min(0).max(5).allow(null, ''),
+    lang: Joi.string().allow(null, ''),
   }),
 };
 
@@ -38,12 +39,14 @@ const updateProduct = {
     productId: Joi.string().custom(objectId),
   }),
   body: Joi.object().keys({
-    name: Joi.string().required(),
-    price: Joi.number().required(),
+    name: Joi.string(),
+    code: Joi.string(),
+    price: Joi.number(),
     description: Joi.string().allow(null, ''),
     images: Joi.array().items(Joi.string()).allow(null, ''),
     categoryId: Joi.string().custom(objectId),
     manufacturerId: Joi.string().custom(objectId),
+    inStock: Joi.boolean().allow(null, ''),
   }),
 };
 

@@ -31,8 +31,8 @@ const getProductById = async (productId, userId) => {
   if (userId) {
     const favoriteList = await getFavoriteListByUserId(userId);
 
-    for (let i = 0; i < favoriteList.productId.length; i++) {
-      if (favoriteList.productId[i]._id.toString() === productId) {
+    for (let i = 0; i < favoriteList?.productId?.length; i++) {
+      if (favoriteList?.productId[i]._id.toString() === productId) {
         product.isFavorite = true;
         break;
       }
@@ -49,7 +49,7 @@ const deleteProductById = async (productId) => {
 };
 
 const updateProductById = async (productId, updateBody) => {
-  const product = await getProductById(productId);
+  const product = await Product.findById(productId);
   Object.assign(product, updateBody);
   await product.save();
   return product;
@@ -113,7 +113,7 @@ const getProductByKeyWord = async (userId, requestQuery) => {
   const skip = +page <= 1 ? 0 : (+page - 1) * +limit;
 
   const products = await Product.find(query)
-    .select('name description images price manufacturer category ratings')
+    .select('name description images price manufacturer category ratings inStock')
     .populate([
       {
         path: 'manufacturerId',

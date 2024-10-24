@@ -58,7 +58,7 @@ const getCartById = async (cartId) => {
 };
 
 const addProductToCart = async (cartBody, userId) => {
-  const { productId, quantity = 1, selectedWeight } = cartBody;
+  const { productId, quantity = 1 } = cartBody;
 
   const product = await productService.getProductById(productId);
 

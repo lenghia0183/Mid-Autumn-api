@@ -34,6 +34,9 @@ const deleteCartDetail = {
   params: Joi.object().keys({
     cartDetailId: Joi.string().custom(objectId),
   }),
+  body: Joi.object().keys({
+    cartId: Joi.string().required().custom(objectId),
+  }),
 };
 
 module.exports = {

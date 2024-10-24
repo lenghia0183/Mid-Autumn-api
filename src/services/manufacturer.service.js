@@ -20,7 +20,7 @@ const getManufacturerById = async (manufacturerId) => {
 const getManufacturersByKeyword = async (query) => {
   const apiFeature = new ApiFeature(Manufacturer);
   const { results, ...detailResult } = await apiFeature.getResults(query, ['name']);
-  return { Manufacturer: results, ...detailResult };
+  return { manufacturers: results, ...detailResult };
 };
 
 const deleteManufacturerById = async (manufacturerId) => {

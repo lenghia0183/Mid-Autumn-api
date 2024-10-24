@@ -6,10 +6,18 @@ const { createAdmin } = require('./services/user.service');
 const cookieParser = require('cookie-parser');
 const apiRoute = require('./routes/api');
 const baseRouter = require('./routes/base.route');
+const cors = require('cors');
 
 const app = express();
 
 app.set('trust proxy', 1);
+
+app.use(
+  cors({
+    origin: 'http://localhost:3001',
+  }),
+);
+
 app.use(express.json());
 app.use(cookieParser());
 

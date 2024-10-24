@@ -27,7 +27,7 @@ const clearMyCart = catchAsync(async (req, res) => {
 const deleteCartDetail = catchAsync(async (req, res) => {
   const { cartId } = req?.body;
   await cartService.deleteCartDetail(req.params.cartDetailId, cartId);
-  res.status(httpStatus.OK).json(response(httpStatus.NO_CONTENT, cartMessage().DELETE_SUCCESS));
+  res.status(httpStatus.OK).json(response(httpStatus.OK, cartMessage().DELETE_SUCCESS));
 });
 
 const updateCartDetail = catchAsync(async (req, res) => {

@@ -46,7 +46,7 @@ const socialLogin = async (idToken) => {
 
   const { email, uid, name, picture } = decodedToken;
   let user = await userService.getUserByEmail(email);
-  if (!user?.fireBaseId) {
+  if (!user?.fireBaseId && user) {
     throw new ApiError(httpStatus.BAD_REQUEST, userMessage().EXISTS_EMAIL);
   }
   if (!user) {

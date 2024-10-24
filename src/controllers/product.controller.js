@@ -22,7 +22,7 @@ const getProducts = catchAsync(async (req, res) => {
 
 const getProduct = catchAsync(async (req, res) => {
   const userId = req[REQUEST_USER_KEY]?._id;
-  const product = await productService.getProductById(userId, req.params.productId);
+  const product = await productService.getProductById(req.params.productId, userId);
   res.status(httpStatus.OK).json(response(httpStatus.OK, productMessage().FIND_SUCCESS, product));
 });
 
