@@ -13,7 +13,12 @@ const authenticate = catchAsync(async (req, res, next) => {
   if (!token) {
     throw new ApiError(httpStatus.UNAUTHORIZED, authMessage().UNAUTHORIZED);
   }
-  const decoded = jwt.verify(token, env.jwt.secretAccess);
+  let decoded;
+  try {
+    decoded = jwt.verify(token, env.jwt.secretAccess);
+  } catch {
+    throw new ApiError(httpStatus.UNAUTHORIZED, authMessage().INVALID_TOKEN);
+  }
   const user = await User.findByIdAndUpdate(decoded.id, {
     lastActive: Date.now(),
   });
