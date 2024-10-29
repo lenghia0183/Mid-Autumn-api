@@ -3,6 +3,13 @@ const response = require('../utils/response');
 const catchAsync = require('../utils/catchAsync');
 const { authService } = require('../services');
 const { authMessage } = require('../messages');
+const { REQUEST_USER_KEY } = require('../constants');
+
+const getMe = catchAsync(async (req, res) => {
+  const userId = req[REQUEST_USER_KEY].id;
+  const user = await authService.getMe(userId);
+  res.status(httpStatus.OK).json(response(httpStatus.OK, authMessage().GET_ME_SUCCESS, user));
+});
 
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
@@ -39,4 +46,5 @@ module.exports = {
   register,
   refreshToken,
   socialLogin,
+  getMe,
 };

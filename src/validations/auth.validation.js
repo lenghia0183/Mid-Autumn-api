@@ -1,6 +1,8 @@
 const Joi = require('joi');
 const { password, email, fullname } = require('./custom.validation');
 
+const getMe = {};
+
 const login = {
   body: Joi.object().keys({
     email: Joi.string().custom(email),
@@ -33,4 +35,5 @@ module.exports = {
   register,
   refreshToken,
   socialLogin,
+  getMe,
 };

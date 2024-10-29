@@ -7,6 +7,15 @@ const ApiError = require('../utils/ApiError');
 const { userMessage, authMessage } = require('../messages');
 const userService = require('./user.service');
 
+const getMe = async (userId) => {
+  const user = await userService.getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, userMessage().NOT_FOUND);
+  }
+  user.password = undefined;
+  return user;
+};
+
 const login = async (email, password) => {
   const user = await userService.getUserByEmail(email);
   if (!user || !(await user.isPasswordMatch(password))) {
@@ -112,4 +121,5 @@ module.exports = {
   register,
   refreshToken,
   socialLogin,
+  getMe,
 };
