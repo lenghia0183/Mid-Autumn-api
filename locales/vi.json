@@ -31,7 +31,9 @@
     "invalidToken": "Token không chính xác",
     "unauthorized": "Bạn chưa đăng nhập",
     "forbidden": "Bạn không có quyền truy cập",
-    "accountLocked": "Tài khoản của bạn đã bị khóa"
+    "accountLocked": "Tài khoản của bạn đã bị khóa",
+    "getMeSuccess": "Lấy thông tin của bạn thành công",
+    "updateMeSuccess": "Cập nhật thông tin thành công"
   },
   "product": {
     "createSuccess": "Tạo sản phẩm mới thành công",

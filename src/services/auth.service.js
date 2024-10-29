@@ -6,12 +6,23 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const { userMessage, authMessage } = require('../messages');
 const userService = require('./user.service');
+const { User } = require('../models');
 
 const getMe = async (userId) => {
   const user = await userService.getUserById(userId);
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, userMessage().NOT_FOUND);
+
+  user.password = undefined;
+  return user;
+};
+
+const updateMe = async (userId, updateBody) => {
+  const user = await userService.getUserById(userId);
+
+  if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
+    throw new ApiError(httpStatus.BAD_REQUEST, userMessage().EXISTS_EMAIL);
   }
+  Object.assign(user, updateBody);
+  await user.save();
   user.password = undefined;
   return user;
 };
@@ -122,4 +133,5 @@ module.exports = {
   refreshToken,
   socialLogin,
   getMe,
+  updateMe,
 };

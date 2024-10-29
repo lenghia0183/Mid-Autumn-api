@@ -11,6 +11,12 @@ const getMe = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(response(httpStatus.OK, authMessage().GET_ME_SUCCESS, user));
 });
 
+const updateMe = catchAsync(async (req, res) => {
+  const userId = req[REQUEST_USER_KEY].id;
+  const updatedUser = await authService.updateMe(userId, req.body);
+  res.status(httpStatus.OK).json(response(httpStatus.OK, authMessage().UPDATE_ME_SUCCESS, updatedUser));
+});
+
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const { user, accessToken, refreshToken } = await authService.login(email, password);
@@ -47,4 +53,5 @@ module.exports = {
   refreshToken,
   socialLogin,
   getMe,
+  updateMe,
 };

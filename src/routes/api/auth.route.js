@@ -7,6 +7,7 @@ const { authenticate, authorize } = require('../../middlewares/auth.middleware')
 const authRouter = express.Router();
 
 authRouter.route('/me').get(authenticate, validate(authValidation.getMe), authController.getMe);
+authRouter.route('/me').put(authenticate, validate(authValidation.updateMe), authController.updateMe);
 
 authRouter.route('/login').post(validate(authValidation.login), authController.login);
 authRouter.route('/social-login').post(validate(authValidation.socialLogin), authController.socialLogin);
