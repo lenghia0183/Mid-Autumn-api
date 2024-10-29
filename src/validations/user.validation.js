@@ -11,7 +11,21 @@ const createUser = {
     isVerify: Joi.boolean().valid(true, false),
     phone: Joi.string().allow(null, ''),
     dateOfBirth: Joi.date().allow(null, ''),
-    address: Joi.string().allow(null, ''),
+    address: Joi.object({
+      province: Joi.object({
+        provinceId: Joi.number(),
+        provinceName: Joi.string(),
+      }),
+      district: Joi.object({
+        districtId: Joi.number(),
+        districtName: Joi.string(),
+      }),
+      ward: Joi.object({
+        wardCode: Joi.string(),
+        wardName: Joi.string(),
+      }),
+      street: Joi.string(),
+    }),
     avatar: Joi.string().allow(null, ''),
     gender: Joi.string().allow('male', 'female', ''),
   }),
@@ -50,6 +64,21 @@ const updateUser = {
       address: Joi.string().allow(null, ''),
       avatar: Joi.string().allow(null, ''),
       gender: Joi.string().allow('male', 'female', ''),
+      address: Joi.object({
+        province: Joi.object({
+          provinceId: Joi.number(),
+          provinceName: Joi.string(),
+        }),
+        district: Joi.object({
+          districtId: Joi.number(),
+          districtName: Joi.string(),
+        }),
+        ward: Joi.object({
+          wardCode: Joi.string(),
+          wardName: Joi.string(),
+        }),
+        street: Joi.string(),
+      }),
     })
     .min(1),
 };

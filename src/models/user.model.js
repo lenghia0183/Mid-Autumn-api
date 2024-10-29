@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { provinceSchema, districtSchema, wardSchema } = require('./address.model');
 
 const userSchema = mongoose.Schema(
   {
@@ -21,10 +22,27 @@ const userSchema = mongoose.Schema(
         return !this.fireBaseId;
       },
     },
+
     fireBaseId: {
       type: String,
       trim: true,
     },
+
+    address: {
+      province: {
+        type: provinceSchema,
+      },
+      district: {
+        type: districtSchema,
+      },
+      ward: {
+        type: wardSchema,
+      },
+      street: {
+        type: String,
+      },
+    },
+
     phone: {
       type: String,
       trim: true,
