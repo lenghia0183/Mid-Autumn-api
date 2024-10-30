@@ -30,10 +30,10 @@ const updateMe = async (userId, updateBody) => {
 const login = async (email, password) => {
   const user = await userService.getUserByEmail(email);
   if (!user || !(await user.isPasswordMatch(password))) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, authMessage().INVALID_LOGIN);
+    throw new ApiError(httpStatus.BAD_REQUEST, authMessage().INVALID_LOGIN);
   }
   if (user.isLocked) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, userMessage().USER_LOCKED);
+    throw new ApiError(httpStatus.BAD_REQUEST, userMessage().USER_LOCKED);
   }
   const accessToken = generateToken('access', { id: user.id, email, role: user.role });
   const refreshToken = generateToken('refresh', { id: user.id });
@@ -54,6 +54,21 @@ const register = async (fullname, email, password) => {
   const accessToken = generateToken('access', { id: user.id, email, role: user.role });
   const refreshToken = generateToken('refresh', { id: user.id });
   return { user, accessToken, refreshToken };
+};
+
+const changePassword = async (userId, currentPassword, newPassword) => {
+  const user = await userService.getUserById(userId);
+
+  if (user?.fireBaseId) {
+    throw new ApiError(httpStatus.BAD_REQUEST, authMessage().CAN_NOT_CHANGE_PASSWORD);
+  }
+
+  if (!(await user.isPasswordMatch(currentPassword))) {
+    throw new ApiError(httpStatus.BAD_REQUEST, authMessage().INVALID_CURRENT_PASSWORD);
+  }
+
+  user.password = newPassword;
+  await user.save();
 };
 
 const socialLogin = async (idToken) => {
@@ -134,4 +149,5 @@ module.exports = {
   socialLogin,
   getMe,
   updateMe,
+  changePassword,
 };

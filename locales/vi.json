@@ -33,7 +33,10 @@
     "forbidden": "Bạn không có quyền truy cập",
     "accountLocked": "Tài khoản của bạn đã bị khóa",
     "getMeSuccess": "Lấy thông tin của bạn thành công",
-    "updateMeSuccess": "Cập nhật thông tin thành công"
+    "updateMeSuccess": "Cập nhật thông tin thành công",
+    "changePasswordSuccess": "Thay đổi mật khẩu thành công",
+    "invalidCurrentPassword": "Mật khẩu cũ không chính xác",
+    "canNotChangePassword": "Bạn không thể thay đổi mật khẩu"
   },
   "product": {
     "createSuccess": "Tạo sản phẩm mới thành công",

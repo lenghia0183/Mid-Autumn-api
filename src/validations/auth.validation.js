@@ -48,6 +48,13 @@ const socialLogin = {
   }),
 };
 
+const changePassword = {
+  body: Joi.object().keys({
+    currentPassword: Joi.string().custom(password),
+    newPassword: Joi.string().custom(password),
+  }),
+};
+
 const register = {
   body: Joi.object().keys({
     email: Joi.string().custom(email),

@@ -47,6 +47,13 @@ const refreshToken = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(response(httpStatus.OK, authMessage().REFRESH_TOKEN_SUCCESS, { accessToken }));
 });
 
+const changePassword = catchAsync(async (req, res) => {
+  const userId = req[REQUEST_USER_KEY].id;
+  const { currentPassword, newPassword } = req.body;
+  await authService.changePassword(userId, currentPassword, newPassword);
+  res.status(httpStatus.OK).json(response(httpStatus.OK, authMessage().CHANGE_PASSWORD_SUCCESS));
+});
+
 module.exports = {
   login,
   register,
@@ -54,4 +61,5 @@ module.exports = {
   socialLogin,
   getMe,
   updateMe,
+  changePassword,
 };

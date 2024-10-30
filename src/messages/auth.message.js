@@ -12,6 +12,9 @@ const authMessage = () => {
     ACCOUNT_LOCKED: i18nService.translate('auth', 'accountLocked'),
     GET_ME_SUCCESS: i18nService.translate('auth', 'getMeSuccess'),
     UPDATE_ME_SUCCESS: i18nService.translate('auth', 'updateMeSuccess'),
+    CHANGE_PASSWORD_SUCCESS: i18nService.translate('auth', 'changePasswordSuccess'),
+    INVALID_CURRENT_PASSWORD: i18nService.translate('auth', 'invalidCurrentPassword'),
+    CAN_NOT_CHANGE_PASSWORD: i18nService.translate('auth', 'canNotChangePassword'),
   };
 };
 
