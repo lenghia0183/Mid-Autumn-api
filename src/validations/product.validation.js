@@ -22,7 +22,7 @@ const getProducts = {
     minPrice: Joi.number().integer().allow(null, ''),
     maxPrice: Joi.number().integer().allow(null, ''),
     categoryId: Joi.string().custom(objectId).allow(null, ''),
-    manufacturerId: Joi.string().custom(objectId).allow(null, ''),
+    manufacturerId: Joi.array().items(Joi.string().custom(objectId)),
     minRating: Joi.number().integer().min(0).max(5).allow(null, ''),
     lang: Joi.string().allow(null, ''),
   }),

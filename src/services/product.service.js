@@ -75,6 +75,8 @@ const getProductByKeyWord = async (userId, requestQuery) => {
 
   const sortObject = Object.assign(...sort);
 
+  console.log('sortObject: ', sortObject);
+
   const query = {
     $and: [
       {
@@ -91,8 +93,8 @@ const getProductByKeyWord = async (userId, requestQuery) => {
     query.$and.push({ categoryId });
   }
 
-  if (manufacturerId) {
-    query.$and.push({ manufacturerId });
+  if (Array.isArray(manufacturerId) && manufacturerId.length > 0) {
+    query.$and.push({ manufacturerId: { $in: manufacturerId } });
   }
 
   if (minPrice || maxPrice) {
