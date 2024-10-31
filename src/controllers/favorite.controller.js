@@ -17,7 +17,8 @@ const toggleFavorite = catchAsync(async (req, res) => {
 
 const getFavoriteListByUserId = catchAsync(async (req, res) => {
   const userId = req[REQUEST_USER_KEY].id;
-  const favoriteList = await favoriteService.getFavoriteListByUserId(userId);
+  console.log('params', req.params);
+  const favoriteList = await favoriteService.getFavoriteListByUserIdV2(userId, req.query);
   res.status(httpStatus.OK).json(response(httpStatus.OK, favoriteMessage().FIND_LIST_SUCCESS, favoriteList));
 });
 

@@ -75,8 +75,6 @@ const getProductByKeyWord = async (userId, requestQuery) => {
 
   const sortObject = Object.assign(...sort);
 
-  console.log('sortObject: ', sortObject);
-
   const query = {
     $and: [
       {
