@@ -15,6 +15,8 @@ const authMessage = () => {
     CHANGE_PASSWORD_SUCCESS: i18nService.translate('auth', 'changePasswordSuccess'),
     INVALID_CURRENT_PASSWORD: i18nService.translate('auth', 'invalidCurrentPassword'),
     CAN_NOT_CHANGE_PASSWORD: i18nService.translate('auth', 'canNotChangePassword'),
+    INVALID_OTP: i18nService.translate('auth', 'invalidOtp'),
+    TOKEN_EXPIRED: i18nService.translate('auth', 'tokenExpired'),
   };
 };
 

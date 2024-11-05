@@ -10,10 +10,17 @@ const env = {
     fullname: process.env.ADMIN_NAME || 'Admin Grocery Mart',
   },
   jwt: {
-    secretAccess: process.env.JWT_SECRET_ACCESS || 'secret-access',
-    expiresAccessToken: process.env.JWT_EXPIRES_ACCESS_MINUTES + 'm' || '100m',
-    secretRefresh: process.env.JWT_SECRET_REFRESH || 'secret-refresh',
-    expiresRefreshToken: process.env.JWT_EXPIRES_REFRESH_MINUTES + 'm' || '1000m',
+    secretAccess: process.env.SECRET_ACCESS_TOKEN || 'secret-access',
+    secretRefresh: process.env.SECRET_REFRESH_TOKEN || 'secret-refresh',
+
+    expiresAccessToken: process.env.EXPIRES_ACCESS_MINUTES + 'm' || '100m',
+    expiresRefreshToken: process.env.EXPIRES_REFRESH_MINUTES + 'm' || '1000m',
+
+    secretForgotPassword: process.env.SECRET_FORGOT_PASSWORD_TOKEN || 'forgot-password',
+    secretVerifyOtp: process.env.SECRET_VERIFY_OTP_TOKEN || 'verify-otp',
+
+    expiresForgotPasswordToken: parseInt(process.env.FORGOT_PASSWORD_TOKEN_EXPIRE_MINUTES) * 60 * 1000 || 300000,
+    expiresVerifyOtpToken: parseInt(process.env.VERIFY_OTP_TOKEN_EXPIRE_MINUTES) * 60 * 1000 || 300000,
   },
 
   cloudinary: {
@@ -54,6 +61,12 @@ const env = {
     folderName: 'grocery-mart',
     typeAllow: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
     maxFileSize: (process.env.MAX_FILE_SIZE_IMAGE_MB || 3) * 1024 * 1024,
+  },
+
+  email: {
+    user: process.env.EMAIL_USER,
+    password: process.env.EMAIL_PASSWORD,
+    from: process.env.EMAIL_FROM,
   },
 };
 

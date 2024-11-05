@@ -11,3 +11,4 @@ module.exports.commentMessage = require('./comment.message');
 module.exports.orderMessage = require('./order.message');
 module.exports.paymentMessage = require('./payment.message');
 module.exports.cartDetailMessage = require('./cart-detail.message');
+module.exports.emailMessage = require('./email.message');

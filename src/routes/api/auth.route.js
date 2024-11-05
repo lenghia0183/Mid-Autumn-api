@@ -18,5 +18,12 @@ authRouter.route('/social-login').post(validate(authValidation.socialLogin), aut
 authRouter.route('/register').post(validate(authValidation.register), authController.register);
 
 authRouter.route('/refresh-token').post(validate(authValidation.refreshToken), authController.refreshToken);
+authRouter.route('/forgot-password').post(validate(authValidation.forgotPassword), authController.forgotPassword);
+
+authRouter
+  .route('/verify-forgot-password-otp')
+  .post(validate(authValidation.verifyForgotPasswordOtp), authController.verifyForgotPasswordOtp);
+
+authRouter.route('/reset-password').post(validate(authValidation.resetPassword), authController.resetPassword);
 
 module.exports = authRouter;

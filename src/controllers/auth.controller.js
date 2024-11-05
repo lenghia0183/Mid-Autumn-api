@@ -4,6 +4,7 @@ const catchAsync = require('../utils/catchAsync');
 const { authService } = require('../services');
 const { authMessage } = require('../messages');
 const { REQUEST_USER_KEY } = require('../constants');
+const { token } = require('morgan');
 
 const getMe = catchAsync(async (req, res) => {
   const userId = req[REQUEST_USER_KEY].id;
@@ -54,6 +55,24 @@ const changePassword = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(response(httpStatus.OK, authMessage().CHANGE_PASSWORD_SUCCESS));
 });
 
+const forgotPassword = catchAsync(async (req, res) => {
+  const { email } = req.body;
+  const tokenForgot = await authService.forgotPassword(email);
+  res.status(httpStatus.OK).json(response(httpStatus.OK, authMessage().FORGOT_PASSWORD_SUCCESS, { tokenForgot }));
+});
+
+const verifyForgotPasswordOtp = catchAsync(async (req, res) => {
+  const tokenVerifyOTP = await authService.verifyForgotPasswordOtp(req.body);
+  res
+    .status(httpStatus.OK)
+    .json(response(httpStatus.OK, authMessage().FORGOT_PASSWORD_OTP_SUCCESS, { tokenVerifyOTP }));
+});
+
+const resetPassword = catchAsync(async (req, res) => {
+  await authService.resetPassword(req.body);
+  res.status(httpStatus.OK).json(response(httpStatus.OK, authMessage().RESET_PASSWORD_SUCCESS));
+});
+
 module.exports = {
   login,
   register,
@@ -62,4 +81,7 @@ module.exports = {
   getMe,
   updateMe,
   changePassword,
+  forgotPassword,
+  verifyForgotPasswordOtp,
+  resetPassword,
 };

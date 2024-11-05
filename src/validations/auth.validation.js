@@ -69,6 +69,26 @@ const refreshToken = {
   }),
 };
 
+const forgotPassword = {
+  body: Joi.object().keys({
+    email: Joi.string().custom(email),
+  }),
+};
+
+const verifyForgotPasswordOtp = {
+  body: Joi.object().keys({
+    otp: Joi.string().required(),
+    tokenForgot: Joi.string().required(),
+  }),
+};
+
+const resetPassword = {
+  body: Joi.object().keys({
+    newPassword: Joi.string().custom(password),
+    tokenVerifyOtp: Joi.string().required(),
+  }),
+};
+
 module.exports = {
   login,
   register,
@@ -76,4 +96,8 @@ module.exports = {
   socialLogin,
   getMe,
   updateMe,
+  changePassword,
+  forgotPassword,
+  verifyForgotPasswordOtp,
+  resetPassword,
 };

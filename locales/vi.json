@@ -36,7 +36,9 @@
     "updateMeSuccess": "Cập nhật thông tin thành công",
     "changePasswordSuccess": "Thay đổi mật khẩu thành công",
     "invalidCurrentPassword": "Mật khẩu cũ không chính xác",
-    "canNotChangePassword": "Bạn không thể thay đổi mật khẩu"
+    "canNotChangePassword": "Bạn không thể thay đổi mật khẩu",
+    "invalidOtp": "Mã OTP không chính xác",
+    "tokenExpired": "Token expired"
   },
   "product": {
     "createSuccess": "Tạo sản phẩm mới thành công",
@@ -115,5 +117,6 @@
   "payment": {
     "paymentFailure": "Lỗi khi xử lý thanh toán.",
     "paymentDescription": "{{userId}} - Thanh toán cho đơn hàng #{{orderId}}"
-  }
+  },
+  "email": "email"
 }

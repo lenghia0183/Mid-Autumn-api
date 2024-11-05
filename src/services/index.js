@@ -11,3 +11,5 @@ module.exports.commentService = require('./comment.service');
 module.exports.orderService = require('./order.service');
 module.exports.paymentService = require('./payment.service');
 module.exports.cartDetailService = require('./cart-detail.service');
+module.exports.emailService = require('./email.service');
+module.exports.cryptoService = require('./crypto.service');

@@ -1,12 +1,15 @@
 const jwt = require('jsonwebtoken');
 const { admin } = require('./../firebase.config');
-
 const { env } = require('../config');
 const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const { userMessage, authMessage } = require('../messages');
 const userService = require('./user.service');
-const { User } = require('../models');
+const { User, Otp } = require('../models');
+const generateOTP = require('../utils/generateOtp');
+const emailService = require('../services/email.service');
+const cryptoService = require('./crypto.service');
+const { TOKEN_TYPE } = require('../constants');
 
 const getMe = async (userId) => {
   const user = await userService.getUserById(userId);
@@ -142,6 +145,93 @@ const generateToken = (type, payload) => {
   return token;
 };
 
+const forgotPassword = async (email) => {
+  const user = await userService.getUserByEmail(email);
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, userMessage().NOT_FOUND);
+  }
+
+  const otp = generateOTP();
+  const expires = Date.now() + 300000;
+  const tokenForgot = cryptoService.encryptObj(
+    {
+      otp,
+      email,
+      expires,
+      type: TOKEN_TYPE.FORGOT_PASSWORD,
+    },
+    env.jwt.secretForgotPassword,
+  );
+
+  await emailService.sendEmail({
+    subject: 'forgot password',
+    to: email,
+    templatePath: '../template/otp.template.ejs',
+    templateData: {
+      name: user?.fullname,
+      otp: otp,
+    },
+  });
+
+  return tokenForgot;
+};
+
+const verifyForgotPasswordOtp = async ({ tokenForgot, otp }) => {
+  const { isExpired, payload } = cryptoService.expiresCheck(tokenForgot, env.jwt.secretForgotPassword);
+
+  if (isExpired) {
+    throw new ApiError(httpStatus.BAD_REQUEST, authMessage().TOKEN_EXPIRED);
+  }
+
+  if (payload.type != TOKEN_TYPE.FORGOT_PASSWORD) {
+    throw new ApiError(httpStatus.BAD_REQUEST, authMessage().INVALID_TOKEN);
+  }
+
+  if (payload.otp != otp) {
+    throw new ApiError(httpStatus.BAD_REQUEST, authMessage().INVALID_OTP);
+  }
+
+  const user = await userService.getUserByEmail(payload.email);
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, userMessage().NOT_FOUND);
+  }
+
+  const expires = Date.now() + 300000;
+
+  const tokenVerifyOTP = cryptoService.encryptObj(
+    {
+      expires,
+      email: user.email,
+      type: TOKEN_TYPE.VERIFY_OTP,
+    },
+    env.jwt.secretVerifyOtp,
+  );
+
+  return tokenVerifyOTP;
+};
+
+const resetPassword = async ({ tokenVerifyOtp, newPassword }) => {
+  const { isExpired, payload } = cryptoService.expiresCheck(tokenVerifyOtp, env.jwt.secretVerifyOtp);
+
+  if (isExpired) {
+    throw new ApiError(httpStatus.BAD_REQUEST, authMessage().TOKEN_EXPIRED);
+  }
+
+  if (payload.type != TOKEN_TYPE.VERIFY_OTP) {
+    throw new ApiError(httpStatus.BAD_REQUEST, authMessage().INVALID_TOKEN);
+  }
+
+  const user = await userService.getUserByEmail(payload.email);
+
+  if (!user) {
+    throw new ApiError(httpStatus.BAD_REQUEST, userMessage().NOT_FOUND);
+  }
+
+  user.password = newPassword;
+  await user.save();
+};
+
 module.exports = {
   login,
   register,
@@ -150,4 +240,7 @@ module.exports = {
   getMe,
   updateMe,
   changePassword,
+  forgotPassword,
+  verifyForgotPasswordOtp,
+  resetPassword,
 };
