@@ -62,10 +62,10 @@ const forgotPassword = catchAsync(async (req, res) => {
 });
 
 const verifyForgotPasswordOtp = catchAsync(async (req, res) => {
-  const tokenVerifyOTP = await authService.verifyForgotPasswordOtp(req.body);
+  const tokenVerifyOtp = await authService.verifyForgotPasswordOtp(req.body);
   res
     .status(httpStatus.OK)
-    .json(response(httpStatus.OK, authMessage().FORGOT_PASSWORD_OTP_SUCCESS, { tokenVerifyOTP }));
+    .json(response(httpStatus.OK, authMessage().VERIFY_FORGOT_PASSWORD_OTP_SUCCESS, { tokenVerifyOtp }));
 });
 
 const resetPassword = catchAsync(async (req, res) => {

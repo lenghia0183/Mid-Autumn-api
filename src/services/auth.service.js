@@ -199,7 +199,7 @@ const verifyForgotPasswordOtp = async ({ tokenForgot, otp }) => {
 
   const expires = Date.now() + 300000;
 
-  const tokenVerifyOTP = cryptoService.encryptObj(
+  const tokenVerifyOtp = cryptoService.encryptObj(
     {
       expires,
       email: user.email,
@@ -208,7 +208,7 @@ const verifyForgotPasswordOtp = async ({ tokenForgot, otp }) => {
     env.jwt.secretVerifyOtp,
   );
 
-  return tokenVerifyOTP;
+  return tokenVerifyOtp;
 };
 
 const resetPassword = async ({ tokenVerifyOtp, newPassword }) => {
