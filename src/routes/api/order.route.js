@@ -8,7 +8,7 @@ const orderRouter = express.Router();
 
 orderRouter.post('/', authenticate, validate(orderValidation.createOrder), orderController.createOrder);
 orderRouter.put(
-  'change-status/:orderId',
+  '/change-status/:orderId',
   authenticate,
   validate(orderValidation.updateOrderStatus),
   orderController.updateOrderStatus,

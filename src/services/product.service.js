@@ -50,6 +50,10 @@ const deleteProductById = async (productId) => {
 
 const updateProductById = async (productId, updateBody) => {
   const product = await Product.findById(productId);
+
+  if (updateBody.images.length === 0) {
+    updateBody.images = product.images;
+  }
   Object.assign(product, updateBody);
   await product.save();
   return product;

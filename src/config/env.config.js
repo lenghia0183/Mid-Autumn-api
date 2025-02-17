@@ -58,7 +58,7 @@ const env = {
   },
 
   image: {
-    folderName: 'grocery-mart',
+    folderName: 'mid-autumn',
     typeAllow: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'],
     maxFileSize: (process.env.MAX_FILE_SIZE_IMAGE_MB || 3) * 1024 * 1024,
   },

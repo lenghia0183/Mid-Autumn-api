@@ -167,9 +167,14 @@ const createOrder = async (orderBody, userId) => {
 
   if (paymentGateway === 'MoMo') {
     const paymentResponse = await paymentService.paymentWithMoMo(order, cart);
+    console.log('paymentResponse: ', paymentResponse);
+    order.payUrl = paymentResponse.payUrl;
+    await order.save();
     return paymentResponse;
   } else if (paymentGateway === 'ZaloPay') {
     const paymentResponse = await paymentService.paymentWithZaloPay(order, cart);
+    order.payUrl = paymentResponse.payUrl;
+    await order.save();
     return paymentResponse;
   }
 };
