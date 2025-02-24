@@ -27,6 +27,14 @@ const getCommentById = async (commentId) => {
 const createComment = async (userId, commentBody) => {
   const { cartDetailService } = require('../services');
 
+  const cartDetail = await cartDetailService.getCartDetailById(commentBody.cartDetailId);
+  console.log('cartDetail', cartDetail);
+  if (cartDetail.commentStatus !== 'allowed') {
+    throw new ApiError(httpStatus.FORBIDDEN, commentMessage().FORBIDDEN_UPDATE);
+  }
+
+  console.log('commentBody', commentBody);
+
   const comment = await Comment.create({ userId, ...commentBody });
   await cartDetailService.updateCartDetailById(commentBody.cartDetailId, { commentStatus: 'commented' });
   await calculateAndUpdateProductRating(comment.productId);

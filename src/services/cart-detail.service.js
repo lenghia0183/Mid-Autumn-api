@@ -10,6 +10,7 @@ const createCartDetail = async (cartDetailBody) => {
 
 const getCartDetailById = async (cartDetailId) => {
   const cartDetail = await CartDetail.findById(cartDetailId);
+
   if (!cartDetail) {
     throw new ApiError(httpStatus.NOT_FOUND, cartDetailMessage().NOT_FOUND);
   }
@@ -19,9 +20,10 @@ const getCartDetailById = async (cartDetailId) => {
 
 const updateCartDetailById = async (cartDetailId, cartDetailBody) => {
   const cartDetail = await getCartDetailById(cartDetailId);
+
   Object.assign(cartDetail, cartDetailBody);
   await cartDetail.save();
-  console.log('cartDetail', cartDetail);
+
   cartDetail.userId = undefined;
   return cartDetail;
 };
