@@ -26,8 +26,8 @@ categoryRouter.delete(
 categoryRouter.put(
   '/:categoryId',
   authenticate,
-  uploadService.uploadImage.single('image'),
   authorize('admin'),
+  uploadService.uploadImage.single('image'),
   validate(categoryValidation.updateCategory),
   categoryController.updateCategory,
 );

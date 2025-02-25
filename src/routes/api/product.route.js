@@ -30,6 +30,7 @@ productRouter.delete(
 productRouter.put(
   '/:productId',
   authenticate,
+  authorize('admin'),
   uploadService.uploadImage.array('images', 5),
   productController.updateProduct,
 );

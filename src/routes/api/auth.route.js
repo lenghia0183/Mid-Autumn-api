@@ -3,11 +3,21 @@ const validate = require('../../middlewares/validate.middleware');
 const { authController } = require('../../controllers');
 const { authValidation } = require('../../validations');
 const { authenticate, authorize } = require('../../middlewares/auth.middleware');
+const { uploadService } = require('../../services');
+const parserFormData = require('../../middlewares/parserFormData.middleware');
 
 const authRouter = express.Router();
 
 authRouter.route('/me').get(authenticate, validate(authValidation.getMe), authController.getMe);
-authRouter.route('/me').put(authenticate, validate(authValidation.updateMe), authController.updateMe);
+authRouter
+  .route('/me')
+  .put(
+    authenticate,
+    uploadService.uploadImage.single('avatar'),
+    parserFormData,
+    validate(authValidation.updateMe),
+    authController.updateMe,
+  );
 
 authRouter
   .route('/change-password')

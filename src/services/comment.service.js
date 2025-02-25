@@ -46,7 +46,7 @@ const getCommentsByProductId = async (productId, query) => {
   const skip = (page - 1) * limit;
 
   const comments = await Comment.find({ productId })
-    .populate({ path: 'userId', select: 'fullname' })
+    .populate({ path: 'userId', select: 'fullname email avatar' })
     .sort({ createdAt: -1 })
     .skip(skip)
     .limit(limit);
