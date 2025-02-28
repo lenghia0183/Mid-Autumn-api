@@ -24,9 +24,15 @@ const getManufacturers = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(response(httpStatus.OK, manufacturerMessage().FIND_LIST_SUCCESS, categories));
 });
 
+const getManufacturer = catchAsync(async (req, res) => {
+  const manufacturer = await manufacturerService.getManufacturerById(req.params.manufacturerId);
+  res.status(httpStatus.OK).json(response(httpStatus.OK, manufacturerMessage().FIND_SUCCESS, manufacturer));
+});
+
 module.exports = {
   createManufacturer,
   deleteManufacturer,
   updateManufacturer,
   getManufacturers,
+  getManufacturer,
 };

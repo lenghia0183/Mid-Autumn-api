@@ -31,9 +31,16 @@ const getManufacturers = {
   }),
 };
 
+const getManufacturer = {
+  params: Joi.object().keys({
+    manufacturerId: Joi.string().custom(objectId),
+  }),
+};
+
 module.exports = {
   createManufacturer,
   updateManufacturer,
   deleteManufacturer,
   getManufacturers,
+  getManufacturer,
 };

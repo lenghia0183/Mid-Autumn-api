@@ -32,5 +32,10 @@ manufacturerRouter.put(
 );
 
 manufacturerRouter.get('/', validate(manufacturerValidation.getManufacturers), manufacturerController.getManufacturers);
+manufacturerRouter.get(
+  '/:manufacturerId',
+  validate(manufacturerValidation.getManufacturer),
+  manufacturerController.getManufacturer,
+);
 
 module.exports = manufacturerRouter;
