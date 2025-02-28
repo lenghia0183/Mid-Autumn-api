@@ -44,7 +44,7 @@ const getProductById = async (productId, userId) => {
 
 const deleteProductById = async (productId) => {
   const product = await getProductById(productId);
-  await product.deleteOne();
+  await Product.deleteOne(product);
   return product;
 };
 
