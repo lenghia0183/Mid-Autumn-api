@@ -4,7 +4,7 @@ const apiRoute = express.Router();
 
 const listRoutesApi = [
   {
-    path: '/users',
+    path: '/user',
     route: require('./user.route'),
   },
   {
