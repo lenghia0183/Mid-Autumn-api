@@ -1,5 +1,5 @@
 const { Cart, CartDetail } = require('../models');
-const { productService } = require('.');
+const { productService, favoriteService } = require('.');
 const ApiError = require('../utils/ApiError');
 const httpStatus = require('http-status');
 const { cartMessage } = require('../messages');
@@ -16,7 +16,10 @@ const getCartByUserId = async (queryRequest, userId) => {
   const totalCartDetails = await CartDetail.countDocuments({ _id: { $in: cart.cartDetails } });
 
   let cartDetails = await CartDetail.find({ _id: { $in: cart.cartDetails } })
-    .populate('productId')
+    .populate({
+      path: 'productId',
+      populate: [{ path: 'manufacturerId' }, { path: 'categoryId' }],
+    })
     .skip(skip)
     .limit(limit)
     .sort({ createdAt: -1 });

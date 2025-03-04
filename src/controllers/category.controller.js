@@ -17,7 +17,7 @@ const deleteCategory = catchAsync(async (req, res) => {
 
 const updateCategory = catchAsync(async (req, res) => {
   if (req.file) req.body['image'] = req.file.path;
-  console.log(req.body);
+
   const category = await categoryService.updateCategoryById(req.params.categoryId, req.body);
   res.status(httpStatus.OK).json(response(httpStatus.OK, categoryMessage().UPDATE_SUCCESS, category));
 });
