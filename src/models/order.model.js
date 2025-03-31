@@ -94,6 +94,9 @@ const orderSchema = mongoose.Schema(
         return this.paymentMethod === 'Bank';
       },
     },
+    payUrl: {
+      type: String,
+    },
   },
 
   {

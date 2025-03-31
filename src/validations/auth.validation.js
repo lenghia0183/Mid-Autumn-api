@@ -4,35 +4,33 @@ const { password, email, fullname } = require('./custom.validation');
 const getMe = {};
 
 const updateMe = {
-  body: Joi.object()
-    .keys({
-      fullname: Joi.string(),
-      email: Joi.string().custom(email),
-      password: Joi.string().custom(password),
-      isLocked: Joi.boolean().valid(true, false),
-      isVerify: Joi.boolean().valid(true, false),
-      phone: Joi.string().allow(null, ''),
-      dateOfBirth: Joi.date().allow(null, ''),
-      address: Joi.string().allow(null, ''),
-      avatar: Joi.string().allow(null, ''),
-      gender: Joi.string().allow('male', 'female', ''),
-      address: Joi.object({
-        province: Joi.object({
-          provinceId: Joi.number(),
-          provinceName: Joi.string(),
-        }),
-        district: Joi.object({
-          districtId: Joi.number(),
-          districtName: Joi.string(),
-        }),
-        ward: Joi.object({
-          wardCode: Joi.string(),
-          wardName: Joi.string(),
-        }),
-        street: Joi.string(),
+  body: Joi.object().keys({
+    fullname: Joi.string(),
+    email: Joi.string().custom(email),
+    password: Joi.string().custom(password),
+    isLocked: Joi.boolean().valid(true, false),
+    isVerify: Joi.boolean().valid(true, false),
+    phone: Joi.string().allow(null, ''),
+    dateOfBirth: Joi.date().allow(null, ''),
+    address: Joi.string().allow(null, ''),
+    avatar: Joi.string().allow(null, ''),
+    gender: Joi.string().allow('male', 'female', ''),
+    address: Joi.object({
+      province: Joi.object({
+        provinceId: Joi.number(),
+        provinceName: Joi.string(),
       }),
-    })
-    .min(1),
+      district: Joi.object({
+        districtId: Joi.number(),
+        districtName: Joi.string(),
+      }),
+      ward: Joi.object({
+        wardCode: Joi.string(),
+        wardName: Joi.string(),
+      }),
+      street: Joi.string(),
+    }),
+  }),
 };
 
 const login = {

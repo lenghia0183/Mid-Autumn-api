@@ -32,6 +32,9 @@ const deleteProduct = catchAsync(async (req, res) => {
 });
 
 const updateProduct = catchAsync(async (req, res) => {
+  if (req.files) {
+    req.body['images'] = req.files.map((file) => file.path);
+  }
   const product = await productService.updateProductById(req.params.productId, req.body);
   res.status(httpStatus.OK).json(response(httpStatus.OK, productMessage().UPDATE_SUCCESS, product));
 });

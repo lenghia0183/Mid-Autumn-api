@@ -44,12 +44,16 @@ const getProductById = async (productId, userId) => {
 
 const deleteProductById = async (productId) => {
   const product = await getProductById(productId);
-  await product.deleteOne();
+  await Product.deleteOne(product);
   return product;
 };
 
 const updateProductById = async (productId, updateBody) => {
-  const product = await Product.findById(productId);
+  const product = await getProductById(productId);
+
+  if (updateBody?.images.length === 0) {
+    updateBody.images = product?.images;
+  }
   Object.assign(product, updateBody);
   await product.save();
   return product;

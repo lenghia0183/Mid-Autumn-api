@@ -15,8 +15,8 @@ commentRouter.post(
 
 commentRouter.get(
   '/:productId',
-  authenticate,
-  authorize('user'),
+  // authenticate,
+  // // authorize('user'),
   validate(commentValidation.getCommentsByProductId),
   commentController.getCommentsByProductId,
 );

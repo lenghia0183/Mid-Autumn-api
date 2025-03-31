@@ -61,6 +61,7 @@ const userSchema = mongoose.Schema(
     },
     isLocked: {
       type: Boolean,
+      default: false,
     },
     role: {
       type: String,

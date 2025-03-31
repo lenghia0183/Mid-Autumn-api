@@ -2,9 +2,10 @@ const { Order, Cart } = require('../models');
 const { orderMessage } = require('../messages');
 const ApiError = require('../utils/ApiError');
 const httpStatus = require('http-status');
+const { updateCartDetailById } = require('./cart-detail.service');
 
 const getOrdersByUserId = async (userId, requestQuery) => {
-  const { limit = 10, page = 1, sortBy = 'createdAt:desc', status } = requestQuery;
+  const { limit = 6, page = 1, sortBy = 'createdAt:desc', status } = requestQuery;
 
   const sort = sortBy.split(',').map((sortItem) => {
     const [field, option = 'desc'] = sortItem.split(':');
@@ -45,7 +46,7 @@ const getOrdersByUserId = async (userId, requestQuery) => {
     .limit(limitNumber)
     .lean();
 
-  const totalOrders = await Order.countDocuments({ userId });
+  const totalOrders = await Order.countDocuments(filter);
 
   const totalPages = Math.ceil(totalOrders / limitNumber);
 
@@ -62,7 +63,7 @@ const getOrdersByUserId = async (userId, requestQuery) => {
 };
 
 const getOrders = async (requestQuery) => {
-  const { limit = 10, page = 1, sortBy = 'createdAt:desc', status } = requestQuery;
+  const { limit = 8, page = 1, sortBy = 'createdAt:desc', status } = requestQuery;
 
   const sort = sortBy.split(',').map((sortItem) => {
     const [field, option = 'desc'] = sortItem.split(':');
@@ -167,9 +168,15 @@ const createOrder = async (orderBody, userId) => {
 
   if (paymentGateway === 'MoMo') {
     const paymentResponse = await paymentService.paymentWithMoMo(order, cart);
+    console.log('paymentResponse: ', paymentResponse);
+    order.payUrl = paymentResponse.payUrl;
+    await order.save();
     return paymentResponse;
   } else if (paymentGateway === 'ZaloPay') {
     const paymentResponse = await paymentService.paymentWithZaloPay(order, cart);
+    console.log('paymentResponse: ', paymentResponse);
+    order.payUrl = paymentResponse.payUrl;
+    await order.save();
     return paymentResponse;
   }
 };
@@ -244,6 +251,15 @@ const updateOrderStatus = async (orderId, status, user) => {
   if (role === 'admin') {
     order.status = status;
     await order.save();
+
+    if (order.status === 'success') {
+      const cartDetails = order.cartDetails;
+      await Promise.all(
+        cartDetails.map(async (cartItem) => {
+          await updateCartDetailById(cartItem.toString(), { commentStatus: 'allowed' });
+        }),
+      );
+    }
   }
 
   return order;

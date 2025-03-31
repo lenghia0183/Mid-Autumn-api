@@ -29,11 +29,19 @@ const createUser = async (userBody) => {
 
 const getUsersByKeyword = async (query) => {
   const apiFeature = new ApiFeature(User);
-  const { results, ...detailResult } = await apiFeature.getResults(query, ['fullname', 'email', 'phone']);
+  const { results, ...detailResult } = await apiFeature.getResults(query, [
+    'fullname',
+    'email',
+    'phone',
+    'isLocked',
+    'isVerify',
+  ]);
   return { users: results, ...detailResult };
 };
 
 const updateUserById = async (userId, updateBody) => {
+  console.log('updateBody', updateBody);
+
   const user = await getUserById(userId);
   if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
     throw new ApiError(httpStatus.BAD_REQUEST, userMessage().EXISTS_EMAIL);
