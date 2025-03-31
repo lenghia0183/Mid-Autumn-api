@@ -10,6 +10,7 @@ const { REQUEST_USER_KEY } = require('../constants/index');
 
 const authenticate = catchAsync(async (req, res, next) => {
   const token = extractToken(req);
+
   if (!token) {
     throw new ApiError(httpStatus.UNAUTHORIZED, authMessage().UNAUTHORIZED);
   }
