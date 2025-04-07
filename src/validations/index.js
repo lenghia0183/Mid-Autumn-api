@@ -9,3 +9,4 @@ module.exports.orderValidation = require('./order.validation');
 module.exports.productValidation = require('./product.validation');
 module.exports.favoriteValidation = require('./favorite.validation');
 module.exports.commentValidation = require('./comment.validation');
+module.exports.statisticValidation = require('./statistic.validation');

@@ -1,4 +1,4 @@
-const respone = (code, message, data = []) => {
+const response = (code, message, data = []) => {
   return {
     code,
     message,
@@ -6,4 +6,4 @@ const respone = (code, message, data = []) => {
   };
 };
 
-module.exports = respone;
+module.exports = response;
