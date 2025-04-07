@@ -24,7 +24,6 @@ const getOrderById = catchAsync(async (req, res) => {
 });
 
 const getOrders = catchAsync(async (req, res) => {
-  console.log('query', req.query);
   const orders = await orderService.getOrders(req.query);
   res.status(httpStatus.OK).json(response(httpStatus.OK, orderMessage().FIND_LIST_SUCCESS, orders));
 });

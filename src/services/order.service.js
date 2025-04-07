@@ -205,9 +205,9 @@ const getOderByIdV2 = async (userId, orderId) => {
     },
   });
 
-  if (order.userId.toString() !== userId) {
-    throw new ApiError(httpStatus.FORBIDDEN, orderMessage().FORBIDDEN);
-  }
+  // if (order.userId.toString() !== userId) {
+  //   throw new ApiError(httpStatus.FORBIDDEN, orderMessage().FORBIDDEN);
+  // }
 
   if (!order) {
     throw new ApiError(httpStatus.NOT_FOUND, orderMessage().NOT_FOUND);

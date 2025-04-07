@@ -15,7 +15,13 @@ orderRouter.put(
 );
 
 orderRouter.get('/me', authenticate, validate(orderValidation.getOrdersByUserId), orderController.getOrdersByUserId);
-orderRouter.get('/:orderId', authenticate, validate(orderValidation.getOrderById), orderController.getOrderById);
+orderRouter.get(
+  '/:orderId',
+  authenticate,
+  authorize('admin'),
+  validate(orderValidation.getOrderById),
+  orderController.getOrderById,
+);
 orderRouter.get('/', authenticate, authorize('admin'), validate(orderValidation.getOrders), orderController.getOrders);
 orderRouter.put('/:orderId', authenticate, validate(orderValidation.updateOrderById), orderController.updateOrderById);
 

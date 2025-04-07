@@ -42,7 +42,7 @@ const getFavoriteListByUserIdV2 = async (userId, requestQuery) => {
   const { limit = 10, page = 1 } = requestQuery;
   const skip = +page <= 1 ? 0 : (+page - 1) * +limit;
 
-  const favorites = await Favorite.findOne({ userId })
+  let favorites = await Favorite.findOne({ userId })
     .populate({
       path: 'productId',
       populate: [
@@ -56,13 +56,22 @@ const getFavoriteListByUserIdV2 = async (userId, requestQuery) => {
     })
     .lean();
 
+  const products = favorites.productId.map((item) => {
+    return {
+      ...item,
+      image: item.images[0],
+    };
+  });
+
+  favorites.productId = products;
+
   if (!favorites) {
     return {
       favorites: [],
       limit,
       totalResult: 0,
       currentPage: +page,
-      totalPages: 0,
+      totalPage: 0,
       currentResult: 0,
     };
   }
@@ -79,7 +88,7 @@ const getFavoriteListByUserIdV2 = async (userId, requestQuery) => {
     limit: limit,
     totalResult,
     currentPage: +page,
-    totalPages: Math.ceil(totalResult / limit),
+    totalPage: Math.ceil(totalResult / limit),
     currentResult: results.length,
   };
 
