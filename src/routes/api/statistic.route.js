@@ -10,4 +10,16 @@ statisticRouter.use(authorize('admin'));
 
 statisticRouter.get('/revenue', validate(statisticValidation.getRevenue), statisticController.getRevenue);
 
+statisticRouter
+  .route('/top-selling')
+  .get(validate(statisticValidation.getTopSellingProducts), statisticController.getTopSellingProducts);
+
+statisticRouter
+  .route('/brand-market-share')
+  .get(validate(statisticValidation.getBrandMarketShare), statisticController.getBrandMarketShare);
+
+statisticRouter
+  .route('/product-distribution')
+  .get(validate(statisticValidation.getProductDistribution), statisticController.getProductDistribution);
+
 module.exports = statisticRouter;
