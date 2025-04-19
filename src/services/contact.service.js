@@ -10,7 +10,7 @@ const createContact = async (contactData) => {
 
 const getContactById = async (contactId) => {
   const contact = await Contact.findById({ _id: contactId });
-  console.log('contact', contact);
+
   if (!contact) {
     throw new ApiError(httpStatus.NOT_FOUND, contactMessage().NOT_FOUND);
   }
@@ -34,4 +34,5 @@ module.exports = {
   createContact,
   getContactsByKeyword,
   deleteContact,
+  getContactById,
 };

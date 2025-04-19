@@ -126,6 +126,7 @@
     "createSuccess": "Tạo liên hệ mới thành công",
     "findListSuccess": "Lấy danh sách liên hệ thành công",
     "deleteSuccess": "Xóa liên hệ thành công",
-    "notFound": "Không tìm thấy liên hệ"
+    "notFound": "Không tìm thấy liên hệ",
+    "findSuccess": "Tìm kiếm liên hệ thành công"
   }
 }

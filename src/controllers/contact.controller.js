@@ -20,8 +20,14 @@ const deleteContact = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(response(httpStatus.OK, contactMessage().DELETE_SUCCESS, contact));
 });
 
+const getContactById = catchAsync(async (req, res) => {
+  const contact = await contactService.getContactById(req.params.contactId);
+  res.status(httpStatus.OK).json(response(httpStatus.OK, contactMessage().FIND_SUCCESS, contact));
+});
+
 module.exports = {
   createContact,
   getContacts,
   deleteContact,
+  getContactById,
 };

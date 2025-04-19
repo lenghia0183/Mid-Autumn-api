@@ -23,4 +23,12 @@ contactRouter.delete(
   contactController.deleteContact,
 );
 
+contactRouter.get(
+  '/:contactId',
+  authenticate,
+  authorize('admin'),
+  validate(contactValidation.getContactById),
+  contactController.getContactById,
+);
+
 module.exports = contactRouter;

@@ -5,6 +5,7 @@ const contactMessage = () => {
     CREATE_SUCCESS: i18nService.translate('contact', 'createSuccess'),
     DELETE_SUCCESS: i18nService.translate('contact', 'deleteSuccess'),
     FIND_LIST_SUCCESS: i18nService.translate('contact', 'findListSuccess'),
+    FIND_SUCCESS: i18nService.translate('contact', 'findSuccess'),
     NOT_FOUND: i18nService.translate('contact', 'notFound'),
   };
 };
