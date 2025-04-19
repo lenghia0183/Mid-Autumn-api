@@ -121,5 +121,11 @@
     "paymentFailure": "Lỗi khi xử lý thanh toán.",
     "paymentDescription": "{{userId}} - Thanh toán cho đơn hàng #{{orderId}}"
   },
-  "email": "email"
+  "email": "email",
+  "contact": {
+    "createSuccess": "Tạo liên hệ mới thành công",
+    "findListSuccess": "Lấy danh sách liên hệ thành công",
+    "deleteSuccess": "Xóa liên hệ thành công",
+    "notFound": "Không tìm thấy liên hệ"
+  }
 }

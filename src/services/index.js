@@ -14,3 +14,4 @@ module.exports.cartDetailService = require('./cart-detail.service');
 module.exports.emailService = require('./email.service');
 module.exports.cryptoService = require('./crypto.service');
 module.exports.statisticService = require('./statistic.service');
+module.exports.contactService = require('./contact.service');

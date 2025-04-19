@@ -44,6 +44,10 @@ const listRoutesApi = [
     route: require('./order.route'),
   },
   {
+    path: '/contact',
+    route: require('./contact.route'),
+  },
+  {
     path: '/payment',
     route: require('./payment.route'),
   },

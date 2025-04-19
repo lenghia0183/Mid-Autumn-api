@@ -11,3 +11,4 @@ module.exports.commentController = require('./comment.controller');
 module.exports.orderController = require('./order.controller');
 module.exports.paymentController = require('./payment.controller');
 module.exports.statisticController = require('./statistic.controller');
+module.exports.contactController = require('./contact.controller');

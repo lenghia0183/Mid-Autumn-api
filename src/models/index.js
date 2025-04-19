@@ -9,3 +9,4 @@ module.exports.Favorite = require('./favorite.model');
 module.exports.Manufacturer = require('./manufacturer.model');
 module.exports.Order = require('./order.model');
 module.exports.Otp = require('./otp.model');
+module.exports.Contact = require('./contact.model');
