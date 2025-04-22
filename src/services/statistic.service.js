@@ -2,7 +2,7 @@ const { Order, CartDetail, Product, Manufacturer } = require('../models');
 const { ORDER_STATUS } = require('../constants');
 
 const getRevenue = async (query) => {
-  const { startDate, endDate } = query;
+  const { startDate, endDate, filterBy = 'month' } = query;
 
   const matchStage = {
     status: 'success',
@@ -19,32 +19,77 @@ const getRevenue = async (query) => {
     matchStage.createdAt = { $lte: new Date(endDate) };
   }
 
+  // Define group stages based on filterBy parameter
+  let timeGrouping;
+  let sortStage;
+  let projectStage;
+
+  if (filterBy === 'day') {
+    timeGrouping = {
+      year: { $year: '$createdAt' },
+      month: { $month: '$createdAt' },
+      day: { $dayOfMonth: '$createdAt' },
+    };
+    sortStage = {
+      '_id.year': 1,
+      '_id.month': 1,
+      '_id.day': 1,
+    };
+    projectStage = {
+      _id: 0,
+      year: '$_id.year',
+      month: '$_id.month',
+      day: '$_id.day',
+      revenue: '$revenue',
+    };
+  } else if (filterBy === 'week') {
+    timeGrouping = {
+      year: { $year: '$createdAt' },
+      week: { $week: '$createdAt' },
+    };
+    sortStage = {
+      '_id.year': 1,
+      '_id.week': 1,
+    };
+    projectStage = {
+      _id: 0,
+      year: '$_id.year',
+      week: '$_id.week',
+      revenue: '$revenue',
+    };
+  } else {
+    // Default: month
+    timeGrouping = {
+      year: { $year: '$createdAt' },
+      month: { $month: '$createdAt' },
+    };
+    sortStage = {
+      '_id.year': 1,
+      '_id.month': 1,
+    };
+    projectStage = {
+      _id: 0,
+      year: '$_id.year',
+      month: '$_id.month',
+      revenue: '$revenue',
+    };
+  }
+
   const result = await Order.aggregate([
     {
       $match: matchStage,
     },
     {
       $group: {
-        _id: {
-          year: { $year: '$createdAt' },
-          month: { $month: '$createdAt' },
-        },
-        monthlyRevenue: { $sum: '$totalAmount' },
+        _id: timeGrouping,
+        revenue: { $sum: '$totalAmount' },
       },
     },
     {
-      $sort: {
-        '_id.year': 1,
-        '_id.month': 1,
-      },
+      $sort: sortStage,
     },
     {
-      $project: {
-        _id: 0,
-        year: '$_id.year',
-        month: '$_id.month',
-        revenue: '$monthlyRevenue',
-      },
+      $project: projectStage,
     },
   ]);
 

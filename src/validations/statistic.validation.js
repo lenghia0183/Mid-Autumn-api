@@ -4,6 +4,7 @@ const getRevenue = {
   query: Joi.object().keys({
     startDate: Joi.date().iso(),
     endDate: Joi.date().iso(),
+    filterBy: Joi.string().valid('day', 'week', 'month').default('month'),
   }),
 };
 
