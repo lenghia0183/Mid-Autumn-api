@@ -3,6 +3,7 @@ const { orderMessage } = require('../messages');
 const ApiError = require('../utils/ApiError');
 const httpStatus = require('http-status');
 const { updateCartDetailById } = require('./cart-detail.service');
+const { productService } = require('.');
 
 const getOrdersByUserId = async (userId, requestQuery) => {
   const { limit = 6, page = 1, sortBy = 'createdAt:desc', status } = requestQuery;
@@ -143,7 +144,12 @@ const createOrder = async (orderBody, userId) => {
     shippingFee = 0,
   } = orderBody;
 
-  const cart = await Cart.findById(cartId);
+  const cart = await Cart.findById(cartId).populate({
+    path: 'cartDetails',
+    populate: {
+      path: 'productId',
+    },
+  });
 
   const totalOrderMoney = +cart?.totalMoney + +shippingFee;
 
@@ -166,6 +172,19 @@ const createOrder = async (orderBody, userId) => {
     recipientPhone,
   });
 
+  // Reduce product quantity for each ordered item
+  await Promise.all(
+    cart.cartDetails.map(async (cartDetail) => {
+      const product = cartDetail.productId;
+      const newQuantity = product.quantity - cartDetail.quantity;
+
+      await productService.updateProductById(product._id, {
+        quantity: newQuantity,
+        inStock: newQuantity > 0,
+      });
+    }),
+  );
+
   if (paymentGateway === 'MoMo') {
     const paymentResponse = await paymentService.paymentWithMoMo(order, cart);
     console.log('paymentResponse: ', paymentResponse);
@@ -179,6 +198,8 @@ const createOrder = async (orderBody, userId) => {
     await order.save();
     return paymentResponse;
   }
+
+  return order;
 };
 
 const getOrderById = async (orderId) => {
@@ -238,6 +259,8 @@ const updateOrderStatus = async (orderId, status, user) => {
 
     if (status === 'canceled') {
       if (order.status === 'pending') {
+        await restoreProductQuantities(order);
+
         order.status = status;
         await order.save();
       } else {
@@ -249,7 +272,13 @@ const updateOrderStatus = async (orderId, status, user) => {
   }
 
   if (role === 'admin') {
+    const previousStatus = order.status;
     order.status = status;
+
+    if (previousStatus === 'pending' && status === 'canceled') {
+      await restoreProductQuantities(order);
+    }
+
     await order.save();
 
     if (order.status === 'success') {
@@ -263,6 +292,29 @@ const updateOrderStatus = async (orderId, status, user) => {
   }
 
   return order;
+};
+
+const restoreProductQuantities = async (order) => {
+  const populatedOrder = await Order.findById(order._id).populate({
+    path: 'cartDetails',
+    populate: {
+      path: 'productId',
+    },
+  });
+
+  if (!populatedOrder) return;
+
+  await Promise.all(
+    populatedOrder.cartDetails.map(async (cartDetail) => {
+      const product = cartDetail.productId;
+      const updatedQuantity = product.quantity + cartDetail.quantity;
+
+      await productService.updateProductById(product._id, {
+        quantity: updatedQuantity,
+        inStock: true,
+      });
+    }),
+  );
 };
 
 module.exports = {

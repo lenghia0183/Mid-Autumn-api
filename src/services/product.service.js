@@ -21,8 +21,7 @@ const getProductById = async (productId, userId) => {
         path: 'categoryId',
         select: 'name',
       },
-    ])
-    .lean();
+    ]);
 
   if (!product) {
     throw new ApiError(httpStatus.NOT_FOUND, productMessage().NOT_FOUND);
@@ -67,9 +66,9 @@ const updateProductById = async (productId, updateBody) => {
     }
   }
 
-  Object.assign(product, updateBody);
-  await product.save();
-  return product;
+  const updatedProduct = await Product.findByIdAndUpdate(productId, { $set: updateBody }, { new: true });
+
+  return updatedProduct;
 };
 
 const getProductByKeyWord = async (userId, requestQuery) => {
