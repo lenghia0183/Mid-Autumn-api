@@ -51,9 +51,22 @@ const deleteProductById = async (productId) => {
 const updateProductById = async (productId, updateBody) => {
   const product = await getProductById(productId);
 
-  if (updateBody?.images.length === 0) {
+  if (updateBody?.images && updateBody?.images.length === 0) {
     updateBody.images = product?.images;
   }
+
+  // Handle quantity update
+  if (updateBody.quantity !== undefined) {
+    // If quantity is greater than 0, set inStock to true automatically
+    if (updateBody.quantity > 0 && !updateBody.inStock) {
+      updateBody.inStock = true;
+    }
+    // If quantity is 0, set inStock to false automatically
+    else if (updateBody.quantity === 0 && updateBody.inStock === undefined) {
+      updateBody.inStock = false;
+    }
+  }
+
   Object.assign(product, updateBody);
   await product.save();
   return product;
@@ -69,6 +82,8 @@ const getProductByKeyWord = async (userId, requestQuery) => {
     categoryId,
     minPrice,
     maxPrice,
+    minQuantity,
+    maxQuantity,
     minRating,
   } = requestQuery;
 
@@ -110,6 +125,17 @@ const getProductByKeyWord = async (userId, requestQuery) => {
     query.$and.push({ price: priceFilter });
   }
 
+  if (minQuantity || maxQuantity) {
+    const quantityFilter = {};
+    if (minQuantity) {
+      quantityFilter.$gte = minQuantity;
+    }
+    if (maxQuantity) {
+      quantityFilter.$lte = maxQuantity;
+    }
+    query.$and.push({ quantity: quantityFilter });
+  }
+
   if (minRating) {
     query.$and.push({ ratings: { $gte: minRating } });
   }
@@ -117,7 +143,7 @@ const getProductByKeyWord = async (userId, requestQuery) => {
   const skip = +page <= 1 ? 0 : (+page - 1) * +limit;
 
   const products = await Product.find(query)
-    .select('name description images price manufacturer category ratings inStock')
+    .select('name description images price costPrice quantity manufacturerId categoryId ratings inStock')
     .populate([
       {
         path: 'manufacturerId',

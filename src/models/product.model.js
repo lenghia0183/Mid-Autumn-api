@@ -15,6 +15,14 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    costPrice: {
+      type: Number,
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      default: 0,
+    },
     manufacturerId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Manufacturer',
