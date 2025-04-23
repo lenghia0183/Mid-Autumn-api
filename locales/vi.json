@@ -128,5 +128,12 @@
     "deleteSuccess": "Xóa liên hệ thành công",
     "notFound": "Không tìm thấy liên hệ",
     "findSuccess": "Tìm kiếm liên hệ thành công"
+  },
+  "chat": {
+    "createSuccess": "Tạo cuộc hội thoại mới thành công",
+    "findListSuccess": "Lấy danh sách cuộc hội thoại thành công",
+    "findSuccess": "Tìm kiếm cuộc hội thoại thành công",
+    "updateSuccess": "Cập nhật cuộc hội thoại thành công",
+    "notFound": "Không tìm thấy cuộc hội thoại"
   }
 }

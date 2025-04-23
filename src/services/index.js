@@ -15,3 +15,4 @@ module.exports.emailService = require('./email.service');
 module.exports.cryptoService = require('./crypto.service');
 module.exports.statisticService = require('./statistic.service');
 module.exports.contactService = require('./contact.service');
+module.exports.chatService = require('./chat.service');

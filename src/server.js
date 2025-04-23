@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const http = require('http');
 const { env, logger, morgan, i18nService } = require('./config');
 const { errorConverter, errorHandler } = require('./middlewares/error.middleware');
 const { createAdmin } = require('./services/user.service');
@@ -7,8 +8,10 @@ const cookieParser = require('cookie-parser');
 const apiRoute = require('./routes/api');
 const baseRouter = require('./routes/base.route');
 const cors = require('cors');
+const setupSocket = require('./socket');
 
 const app = express();
+const server = http.createServer(app);
 
 app.set('trust proxy', 1);
 
@@ -33,6 +36,12 @@ app.use('/', baseRouter);
 app.use(errorConverter);
 app.use(errorHandler);
 
+// Set up Socket.io
+const io = setupSocket(server);
+
+// Export io for use in other files if needed
+app.set('io', io);
+
 mongoose
   .connect(env.mongoURI)
   .then(() => logger.info('MongoDB Connected...'))
@@ -41,7 +50,7 @@ mongoose
     logger.info('admin created');
   })
   .then(() =>
-    app.listen(env.port, () => {
+    server.listen(env.port, () => {
       logger.info(`Server running on port ${env.port}`);
     }),
   )

@@ -10,3 +10,4 @@ module.exports.Manufacturer = require('./manufacturer.model');
 module.exports.Order = require('./order.model');
 module.exports.Otp = require('./otp.model');
 module.exports.Contact = require('./contact.model');
+module.exports.Chat = require('./chat.model');

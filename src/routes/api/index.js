@@ -55,6 +55,10 @@ const listRoutesApi = [
     path: '/statistic',
     route: require('./statistic.route'),
   },
+  {
+    path: '/chat',
+    route: require('./chat.route'),
+  },
 ];
 
 listRoutesApi.forEach((route) => {
