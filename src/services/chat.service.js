@@ -8,13 +8,12 @@ const httpStatus = require('http-status');
  * @param {ObjectId} adminId
  * @returns {Promise<Chat>}
  */
-const createOrFindChat = async (userId, adminId) => {
-  let chat = await Chat.findOne({ userId, adminId });
+const createOrFindChat = async (userId) => {
+  let chat = await Chat.findOne({ userId }).populate();
 
   if (!chat) {
     chat = await Chat.create({
       userId,
-      adminId,
       messages: [],
       lastMessage: Date.now(),
     });
@@ -126,14 +125,7 @@ const updateMessageStatus = async (chatId, messageId, status) => {
  * @returns {Promise<Chat>}
  */
 const getUserChat = async (userId) => {
-  // Find an admin user
-  const admin = await User.findOne({ role: 'admin' });
-
-  if (!admin) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'No admin found');
-  }
-
-  const chat = await createOrFindChat(userId, admin._id);
+  const chat = await createOrFindChat(userId);
   return chat;
 };
 

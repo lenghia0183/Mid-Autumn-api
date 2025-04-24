@@ -2,9 +2,9 @@ const { Chat } = require('../models');
 const { chatService } = require('../services');
 
 const chatHandler = (io, socket) => {
-  const joinChat = async (chatId) => {
-    console.log('joinChat', chatId);
-    socket.join(`chat:${chatId}`);
+  const joinChat = async (userId) => {
+    console.log('joinChat', userId);
+    socket.join(`chat:${userId}`);
   };
 
   const leaveChat = (chatId) => {
@@ -14,7 +14,7 @@ const chatHandler = (io, socket) => {
   const sendMessage = async (data) => {
     try {
       const { chatId, content } = data;
-
+      console.log('sendMessage', data);
       const messageData = {
         sender: socket.user._id,
         content,

@@ -4,6 +4,7 @@ const { env, logger } = require('../config');
 const { User } = require('../models');
 const chatHandler = require('./chat.handler');
 const ApiError = require('../utils/ApiError');
+const httpStatus = require('http-status');
 
 const setupSocket = (server) => {
   const io = socketIO(server, {
