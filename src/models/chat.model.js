@@ -30,11 +30,6 @@ const chatSchema = mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    adminId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
     messages: [messageSchema],
     lastMessage: {
       type: Date,
@@ -43,6 +38,10 @@ const chatSchema = mongoose.Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    isOnline: {
+      type: Boolean,
+      default: false,
     },
   },
   {

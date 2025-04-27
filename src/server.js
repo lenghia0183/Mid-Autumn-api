@@ -33,15 +33,11 @@ app.use('/api/v1', apiRoute);
 
 app.use('/', baseRouter);
 
-app.use(errorConverter);
-app.use(errorHandler);
-
-// Set up Socket.io
 const io = setupSocket(server);
 
-// Export io for use in other files if needed
 app.set('io', io);
-
+app.use(errorConverter);
+app.use(errorHandler);
 mongoose
   .connect(env.mongoURI)
   .then(() => logger.info('MongoDB Connected...'))
@@ -55,3 +51,8 @@ mongoose
     }),
   )
   .catch((err) => logger.error(err));
+
+server.on('close', () => {
+  io.close();
+  logger.info('Socket server closed');
+});

@@ -19,7 +19,6 @@ const getAdminChats = catchAsync(async (req, res) => {
 
 const getUserChat = catchAsync(async (req, res) => {
   const chat = await chatService.getUserChat(req[REQUEST_USER_KEY]._id);
-
   res.status(httpStatus.OK).send(response(httpStatus.OK, chatMessage().FIND_SUCCESS, chat));
 });
 

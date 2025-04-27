@@ -1,38 +1,33 @@
-const { Chat } = require('../models');
+const catchAsyncSocket = require('../utils/catchAsyncSocket');
 const { chatService } = require('../services');
 
 const chatHandler = (io, socket) => {
-  const joinChat = async (userId) => {
-    console.log('joinChat', userId);
+  const joinChat = async ({ userId }) => {
     socket.join(`chat:${userId}`);
+    await chatService.updateOnlineStatus(userId, true);
   };
 
-  const leaveChat = (chatId) => {
-    socket.leave(`chat:${chatId}`);
+  const leaveChat = async ({ userId }) => {
+    socket.leave(`chat:${userId}`);
+    await chatService.updateOnlineStatus(userId, false);
   };
 
   const sendMessage = async (data) => {
     try {
-      const { chatId, content } = data;
-      console.log('sendMessage', data);
+      const { userId, content } = data;
+
       const messageData = {
         sender: socket.user._id,
         content,
         status: 'sent',
       };
 
-      const chat = await chatService.addMessage(chatId, messageData);
+      const chat = await chatService.addMessage(userId, messageData);
       const message = chat.messages[chat.messages.length - 1];
 
-      io.to(`chat:${chatId}`).emit('message:new', {
-        chatId,
-        message,
-      });
-
-      const recipientId = socket.user.role === 'admin' ? chat.userId.toString() : chat.adminId.toString();
-
-      io.to(recipientId).emit('chat:notification', {
-        chatId,
+      io.to(`chat:${userId}`).emit('message:new', {
+        chatId: chat._id,
+        userId,
         message,
       });
 
@@ -41,69 +36,55 @@ const chatHandler = (io, socket) => {
         messageId: message._id,
       });
     } catch (error) {
-      console.error('Error sending message:', error);
-      socket.emit('message:sent', {
-        success: false,
-        error: error.message,
-      });
+      console.log(error);
     }
   };
 
   const markMessageAsRead = async (data) => {
-    try {
-      const { chatId, messageId } = data;
+    const { chatId, messageId } = data;
 
-      await chatService.updateMessageStatus(chatId, messageId, 'read');
+    await chatService.updateMessageStatus(chatId, messageId, 'read');
 
-      io.to(`chat:${chatId}`).emit('message:read', {
-        chatId,
-        messageId,
-      });
-    } catch (error) {
-      console.error('Error marking message as read:', error);
-    }
+    io.to(`chat:${chatId}`).emit('message:read', {
+      chatId,
+      messageId,
+    });
   };
 
   const markMessageAsDelivered = async (data) => {
-    try {
-      const { chatId, messageId } = data;
+    const { chatId, messageId } = data;
 
-      await chatService.updateMessageStatus(chatId, messageId, 'delivered');
+    await chatService.updateMessageStatus(chatId, messageId, 'delivered');
 
-      io.to(`chat:${chatId}`).emit('message:delivered', {
-        chatId,
-        messageId,
-      });
-    } catch (error) {
-      console.error('Error marking message as delivered:', error);
-    }
+    io.to(`chat:${chatId}`).emit('message:delivered', {
+      chatId,
+      messageId,
+    });
   };
 
   const typing = (data) => {
-    const { chatId } = data;
+    const { userId } = data;
 
-    socket.to(`chat:${chatId}`).emit('user:typing', {
-      chatId,
+    socket.to(`chat:${userId}`).emit('user:typing', {
       userId: socket.user._id,
     });
   };
 
   const stopTyping = (data) => {
-    const { chatId } = data;
+    const { userId } = data;
 
-    socket.to(`chat:${chatId}`).emit('user:stop-typing', {
-      chatId,
+    socket.to(`chat:${userId}`).emit('user:stop-typing', {
       userId: socket.user._id,
     });
   };
 
-  socket.on('chat:join', joinChat);
-  socket.on('chat:leave', leaveChat);
-  socket.on('message:send', sendMessage);
-  socket.on('message:mark-read', markMessageAsRead);
-  socket.on('message:mark-delivered', markMessageAsDelivered);
-  socket.on('user:typing', typing);
-  socket.on('user:stop-typing', stopTyping);
+  socket.on('chat:join', catchAsyncSocket(joinChat));
+  socket.on('chat:leave', catchAsyncSocket(leaveChat));
+  socket.on('message:send', catchAsyncSocket(sendMessage));
+  socket.on('message:mark-read', catchAsyncSocket(markMessageAsRead));
+  socket.on('message:mark-delivered', catchAsyncSocket(markMessageAsDelivered));
+  socket.on('user:typing', catchAsyncSocket(typing));
+  socket.on('user:stop-typing', catchAsyncSocket(stopTyping));
 };
 
 module.exports = chatHandler;

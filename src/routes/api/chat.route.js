@@ -12,8 +12,8 @@ router.post('/message', chatController.sendMessage);
 
 router.patch('/:chatId/read-all', chatController.markAllAsRead);
 
-router.get('/admin', authorize(['admin']), chatController.getAdminChats);
-router.get('/:chatId', authorize(['admin']), chatController.getChatById);
+router.get('/', authorize('admin'), chatController.getAdminChats);
+router.get('/:chatId', authorize('admin'), chatController.getChatById);
 router.patch('/message/status', authorize(['admin']), chatController.updateMessageStatus);
 
 module.exports = router;
