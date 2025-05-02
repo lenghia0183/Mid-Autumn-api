@@ -655,9 +655,108 @@ const getProductDistribution = async (query) => {
   };
 };
 
+/**
+ * Get order statistics by region (province)
+ * @param {Object} query - Query parameters
+ * @returns {Object} Statistics data
+ */
+const getOrdersByRegion = async (query) => {
+  const { startDate, endDate, filterBy = 'day' } = query;
+  const now = new Date();
+
+  // Set up date filters based on filterBy parameter
+  const matchStage = {
+    status: 'success', // Only count successful orders
+  };
+
+  if (startDate && endDate) {
+    // If explicit date range is provided, use it
+    matchStage.createdAt = {
+      $gte: new Date(startDate),
+      $lte: new Date(endDate),
+    };
+  } else {
+    // Otherwise, apply automatic date ranges based on filterBy
+    if (filterBy === 'day') {
+      // Today's data
+      const today = new Date(now);
+      today.setHours(0, 0, 0, 0);
+      matchStage.createdAt = { $gte: today };
+    } else if (filterBy === 'week') {
+      // One week from today
+      const oneWeekAgo = new Date(now);
+      oneWeekAgo.setDate(now.getDate() - 7);
+      matchStage.createdAt = { $gte: oneWeekAgo };
+    } else if (filterBy === 'month') {
+      // One month from today
+      const oneMonthAgo = new Date(now);
+      oneMonthAgo.setMonth(now.getMonth() - 1);
+      matchStage.createdAt = { $gte: oneMonthAgo };
+    } else if (filterBy === 'year') {
+      // One year from today
+      const oneYearAgo = new Date(now);
+      oneYearAgo.setFullYear(now.getFullYear() - 1);
+      matchStage.createdAt = { $gte: oneYearAgo };
+    }
+  }
+
+  // Count total orders in the period
+  const totalOrders = await Order.countDocuments(matchStage);
+
+  if (totalOrders === 0) {
+    return {
+      period: getFilterPeriodInfo(filterBy, startDate, endDate),
+      totalOrders: 0,
+      topCities: [],
+      othersPercentage: 0,
+    };
+  }
+
+  // Aggregate orders by province
+  const ordersByProvince = await Order.aggregate([
+    {
+      $match: matchStage,
+    },
+    {
+      $group: {
+        _id: '$address.province.provinceName',
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        provinceName: '$_id',
+        count: 1,
+        percentage: {
+          $multiply: [{ $divide: ['$count', totalOrders] }, 100],
+        },
+      },
+    },
+    {
+      $sort: { count: -1 },
+    },
+  ]);
+
+  // Get top 5 provinces
+  const topCities = ordersByProvince.slice(0, 5);
+
+  // Calculate the percentage of orders from other provinces
+  const topCitiesTotal = topCities.reduce((sum, city) => sum + city.count, 0);
+  const othersPercentage = ((totalOrders - topCitiesTotal) / totalOrders) * 100;
+
+  return {
+    period: getFilterPeriodInfo(filterBy, startDate, endDate),
+    totalOrders,
+    topCities,
+    othersPercentage,
+  };
+};
+
 module.exports = {
   getRevenue,
   getTopSellingProducts,
   getBrandMarketShare,
   getProductDistribution,
+  getOrdersByRegion,
 };

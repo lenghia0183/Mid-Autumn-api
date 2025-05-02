@@ -25,9 +25,15 @@ const getProductDistribution = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(response(httpStatus.OK, commentMessage().FIND_LIST_SUCCESS, result));
 });
 
+const getOrdersByRegion = catchAsync(async (req, res) => {
+  const result = await statisticService.getOrdersByRegion(req.query);
+  res.status(httpStatus.OK).json(response(httpStatus.OK, commentMessage().FIND_LIST_SUCCESS, result));
+});
+
 module.exports = {
   getRevenue,
   getTopSellingProducts,
   getBrandMarketShare,
   getProductDistribution,
+  getOrdersByRegion,
 };

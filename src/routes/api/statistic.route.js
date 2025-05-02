@@ -22,4 +22,8 @@ statisticRouter
   .route('/product-distribution')
   .get(validate(statisticValidation.getProductDistribution), statisticController.getProductDistribution);
 
+statisticRouter
+  .route('/orders-by-region')
+  .get(validate(statisticValidation.getOrdersByRegion), statisticController.getOrdersByRegion);
+
 module.exports = statisticRouter;
