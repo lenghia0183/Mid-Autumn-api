@@ -9,23 +9,20 @@ const userSchema = mongoose.Schema(
       trim: true,
       required: true,
     },
+
     email: {
       type: String,
       trim: true,
       unique: true,
       required: true,
     },
+
     password: {
       type: String,
       select: false,
       required: function () {
         return !this.fireBaseId;
       },
-    },
-
-    fireBaseId: {
-      type: String,
-      trim: true,
     },
 
     address: {
@@ -43,26 +40,25 @@ const userSchema = mongoose.Schema(
       },
     },
 
+    fireBaseId: {
+      type: String,
+      trim: true,
+    },
+
     phone: {
       type: String,
       trim: true,
     },
-    dateOfBirth: {
-      type: Date,
-      default: '2000-01-01',
-    },
-    gender: {
-      type: String,
-      enum: ['male', 'female'],
-      default: 'male',
-    },
+
     isVerify: {
       type: Boolean,
     },
+
     isLocked: {
       type: Boolean,
       default: false,
     },
+
     role: {
       type: String,
       enum: ['admin', 'user'],
