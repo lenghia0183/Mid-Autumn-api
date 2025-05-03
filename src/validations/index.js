@@ -11,3 +11,4 @@ module.exports.favoriteValidation = require('./favorite.validation');
 module.exports.commentValidation = require('./comment.validation');
 module.exports.statisticValidation = require('./statistic.validation');
 module.exports.contactValidation = require('./contact.validation');
+module.exports.visitValidation = require('./visit.validation');
