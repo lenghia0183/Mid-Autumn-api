@@ -1,4 +1,5 @@
-const { Order, CartDetail, Product, Manufacturer } = require('../models');
+const mongoose = require('mongoose');
+const { Order, CartDetail, Product, Manufacturer, Comment } = require('../models');
 const { ORDER_STATUS } = require('../constants');
 
 /**
@@ -753,10 +754,119 @@ const getOrdersByRegion = async (query) => {
   };
 };
 
+/**
+ * Get review statistics
+ * @param {Object} query - Query parameters
+ * @returns {Object} Review statistics data
+ */
+const getReviewStatistics = async (query) => {
+  const { startDate, endDate, filterBy = 'day', productId } = query;
+  const now = new Date();
+
+  // Set up date filters based on filterBy parameter
+  const matchStage = {};
+
+  if (startDate && endDate) {
+    // If explicit date range is provided, use it
+    matchStage.createdAt = {
+      $gte: new Date(startDate),
+      $lte: new Date(endDate),
+    };
+  } else {
+    // Otherwise, apply automatic date ranges based on filterBy
+    if (filterBy === 'day') {
+      // Today's data
+      const today = new Date(now);
+      today.setHours(0, 0, 0, 0);
+      matchStage.createdAt = { $gte: today };
+    } else if (filterBy === 'week') {
+      // One week from today
+      const oneWeekAgo = new Date(now);
+      oneWeekAgo.setDate(now.getDate() - 7);
+      matchStage.createdAt = { $gte: oneWeekAgo };
+    } else if (filterBy === 'month') {
+      // One month from today
+      const oneMonthAgo = new Date(now);
+      oneMonthAgo.setMonth(now.getMonth() - 1);
+      matchStage.createdAt = { $gte: oneMonthAgo };
+    } else if (filterBy === 'year') {
+      // One year from today
+      const oneYearAgo = new Date(now);
+      oneYearAgo.setFullYear(now.getFullYear() - 1);
+      matchStage.createdAt = { $gte: oneYearAgo };
+    }
+  }
+
+  // If productId is provided, filter by it
+  if (productId) {
+    matchStage.productId = mongoose.Types.ObjectId(productId);
+  }
+
+  // Count total reviews in the period
+  const totalReviews = await Comment.countDocuments(matchStage);
+
+  if (totalReviews === 0) {
+    return {
+      period: getFilterPeriodInfo(filterBy, startDate, endDate),
+      totalReviews: 0,
+      averageRating: 0,
+      ratingDistribution: [],
+    };
+  }
+
+  // Get average rating
+  const ratingStats = await Comment.aggregate([
+    {
+      $match: matchStage,
+    },
+    {
+      $group: {
+        _id: null,
+        averageRating: { $avg: '$rating' },
+        count: { $sum: 1 },
+      },
+    },
+  ]);
+
+  // Get rating distribution (count of each rating 1-5)
+  const ratingDistribution = await Comment.aggregate([
+    {
+      $match: matchStage,
+    },
+    {
+      $group: {
+        _id: '$rating',
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        rating: '$_id',
+        count: 1,
+        percentage: {
+          $multiply: [{ $divide: ['$count', totalReviews] }, 100],
+        },
+      },
+    },
+    {
+      $sort: { rating: 1 },
+    },
+  ]);
+
+  return {
+    period: getFilterPeriodInfo(filterBy, startDate, endDate),
+    totalReviews,
+    averageRating: ratingStats.length > 0 ? ratingStats[0].averageRating : 0,
+    ratingDistribution,
+  };
+};
+
 module.exports = {
   getRevenue,
   getTopSellingProducts,
   getBrandMarketShare,
   getProductDistribution,
   getOrdersByRegion,
+  getReviewStatistics,
 };

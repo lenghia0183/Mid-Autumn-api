@@ -6,10 +6,10 @@ const { authenticate, authorize } = require('../../middlewares/auth.middleware')
 
 const visitRouter = express.Router();
 
-// Public endpoint for recording visits - no authentication required
+
 visitRouter.post('/', validate(visitValidation.recordVisit), visitController.recordVisit);
 
-// Admin-only endpoint for retrieving visit statistics
+
 visitRouter.get(
   '/statistics',
   authenticate,

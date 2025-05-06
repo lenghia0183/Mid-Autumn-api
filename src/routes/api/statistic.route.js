@@ -26,4 +26,8 @@ statisticRouter
   .route('/orders-by-region')
   .get(validate(statisticValidation.getOrdersByRegion), statisticController.getOrdersByRegion);
 
+statisticRouter
+  .route('/reviews')
+  .get(validate(statisticValidation.getReviewStatistics), statisticController.getReviewStatistics);
+
 module.exports = statisticRouter;
