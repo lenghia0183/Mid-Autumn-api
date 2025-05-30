@@ -15,3 +15,4 @@ module.exports.emailMessage = require('./email.message');
 module.exports.contactMessage = require('./contact.message');
 module.exports.chatMessage = require('./chat.message');
 module.exports.visitMessage = require('./visit.message');
+module.exports.aiMessage = require('./ai.message');

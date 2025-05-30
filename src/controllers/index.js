@@ -14,3 +14,4 @@ module.exports.statisticController = require('./statistic.controller');
 module.exports.contactController = require('./contact.controller');
 module.exports.chatController = require('./chat.controller');
 module.exports.visitController = require('./visit.controller');
+module.exports.aiController = require('./ai.controller');

@@ -69,6 +69,9 @@ const env = {
     password: process.env.EMAIL_PASSWORD,
     from: process.env.EMAIL_FROM,
   },
+  gemini: {
+    apiKey: process.env.GEMINI_API_KEY,
+  },
 };
 
 module.exports = env;

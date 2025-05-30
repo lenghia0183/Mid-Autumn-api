@@ -63,6 +63,10 @@ const listRoutesApi = [
     path: '/visit',
     route: require('./visit.route'),
   },
+  {
+    path: '/ai',
+    route: require('./ai.route'),
+  },
 ];
 
 listRoutesApi.forEach((route) => {
