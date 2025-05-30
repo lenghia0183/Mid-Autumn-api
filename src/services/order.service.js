@@ -240,11 +240,13 @@ const getOderByIdV2 = async (userId, orderId) => {
   return order;
 };
 
-const updateOrderById = async (orderId, updateBody, user) => {
+const updateOrderById = async (orderId, updateBody, user, isPaymentCallBack = false) => {
   const order = await getOrderById(orderId);
 
-  if (order.userId.toString() !== user?.id) {
-    throw new ApiError(httpStatus.FORBIDDEN, orderMessage().FORBIDDEN);
+  if (!isPaymentCallBack) {
+    if (order.userId.toString() !== user?.id) {
+      throw new ApiError(httpStatus.FORBIDDEN, orderMessage().FORBIDDEN);
+    }
   }
 
   Object.assign(order, updateBody);

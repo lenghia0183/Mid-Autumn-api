@@ -158,10 +158,15 @@ const callbackMoMo = async (callbackData) => {
   console.log('callBackData', callbackData);
 
   if (resultCode === 0) {
-    await orderService.updateOrderById(orderId, {
-      isPaid: true,
-      momoTransId: transId,
-    });
+    await orderService.updateOrderById(
+      orderId,
+      {
+        isPaid: true,
+        momoTransId: transId,
+      },
+      null,
+      true,
+    );
   }
   return;
 };
