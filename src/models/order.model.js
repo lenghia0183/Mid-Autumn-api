@@ -97,6 +97,18 @@ const orderSchema = mongoose.Schema(
     payUrl: {
       type: String,
     },
+    momoTransId: {
+      type: String,
+      default: null,
+    },
+    momoRequestId: {
+      type: String,
+      default: null,
+    },
+    isRefunded: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   {

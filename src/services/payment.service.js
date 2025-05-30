@@ -154,10 +154,14 @@ const paymentWithZaloPay = async (order, cart) => {
 };
 
 const callbackMoMo = async (callbackData) => {
-  const { orderId, resultCode } = callbackData;
+  const { orderId, resultCode, transId } = callbackData;
+  console.log('callBackData', callbackData);
 
   if (resultCode === 0) {
-    await orderService.updateOrderById(orderId, { isPaid: true });
+    await orderService.updateOrderById(orderId, {
+      isPaid: true,
+      momoTransId: transId,
+    });
   }
   return;
 };
@@ -192,9 +196,83 @@ const callBackZalo = async (callbackData) => {
   return result;
 };
 
+const refundMoMoPayment = async (orderId, amount, description) => {
+  try {
+    const order = await orderService.getOrderById(orderId);
+    if (!order || !order.isPaid) {
+      throw new ApiError(httpStatus.BAD_REQUEST, 'Order not found or not paid');
+    }
+
+    const transId = order.momoTransId || '';
+
+    const accessKey = env.momo.accessKey.toString();
+    const secretKey = env.momo.secretKey.toString();
+    const partnerCode = env.momo.partnerCode;
+    const requestId = `${moment().format('YYYYMMDD')}_${Math.floor(Math.random() * 1000000)}`;
+
+    const amountStr = amount.toString();
+
+    const rawSignature =
+      'accessKey=' +
+      accessKey +
+      '&amount=' +
+      amountStr +
+      '&description=' +
+      description +
+      '&orderId=' +
+      orderId +
+      '&partnerCode=' +
+      partnerCode +
+      '&requestId=' +
+      requestId +
+      '&transId=' +
+      transId;
+
+    const signature = crypto.createHmac('sha256', secretKey).update(rawSignature).digest('hex');
+
+    const requestBody = JSON.stringify({
+      partnerCode,
+      orderId,
+      requestId,
+      amount: amountStr,
+      transId,
+      lang: 'vi',
+      description,
+      signature,
+    });
+
+    console.log('MoMo Refund Request:', JSON.parse(requestBody));
+
+    const options = {
+      method: 'POST',
+      url: env.momo.refundUrl,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: requestBody,
+    };
+
+    const response = await axios(options);
+    console.log('MoMo Refund Response:', response.data);
+
+    if (response.data.resultCode === 0) {
+      await orderService.updateOrderById(orderId, { isRefunded: true });
+    }
+
+    return response.data;
+  } catch (error) {
+    console.error('MoMo Refund Error:', error.response?.data || error.message);
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      error.response?.data?.message || paymentMessage().REFUND_FAILURE,
+    );
+  }
+};
+
 module.exports = {
   paymentWithMoMo,
   paymentWithZaloPay,
   callBackZalo,
   callbackMoMo,
+  refundMoMoPayment,
 };

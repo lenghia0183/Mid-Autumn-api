@@ -189,6 +189,10 @@ const createOrder = async (orderBody, userId) => {
     const paymentResponse = await paymentService.paymentWithMoMo(order, cart);
     console.log('paymentResponse: ', paymentResponse);
     order.payUrl = paymentResponse.payUrl;
+
+    // Store the requestId which will be used to match with the transId later
+    order.momoRequestId = paymentResponse.requestId;
+
     await order.save();
     return paymentResponse;
   } else if (paymentGateway === 'ZaloPay') {

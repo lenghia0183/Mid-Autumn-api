@@ -13,7 +13,14 @@ const callBackMoMo = catchAsync(async (req, res) => {
   res.json(callbackResponse);
 });
 
+const refundMoMoPayment = catchAsync(async (req, res) => {
+  const { orderId, amount, description } = req.body;
+  const refundResponse = await paymentService.refundMoMoPayment(orderId, amount, description);
+  res.status(httpStatus.OK).json(response(httpStatus.OK, paymentMessage().REFUND_SUCCESS, refundResponse));
+});
+
 module.exports = {
   callBackZalo,
   callBackMoMo,
+  refundMoMoPayment,
 };

@@ -41,6 +41,7 @@ const env = {
     accessKey: process.env.MOMO_ACCESS_KEY,
     secretKey: process.env.MOMO_SECRET_KEY,
     apiUrl: process.env.MOMO_API_URL || 'https://test-payment.momo.vn/gw_payment/transactionProcessor',
+    refundUrl: process.env.MOMO_REFUND_URL || 'https://test-payment.momo.vn/v2/gateway/api/refund',
     returnUrl: process.env.MOMO_RETURN_URL,
     ipnUrl: process.env.MOMO_IPN_URL,
     redirectUrl: process.env.MOMO_REDIRECT_URL,
