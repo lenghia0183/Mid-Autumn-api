@@ -12,3 +12,4 @@ module.exports.Otp = require('./otp.model');
 module.exports.Contact = require('./contact.model');
 module.exports.Chat = require('./chat.model');
 module.exports.Visit = require('./visit.model');
+module.exports.Inventory = require('./inventory.model');

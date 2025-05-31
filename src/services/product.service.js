@@ -142,7 +142,7 @@ const getProductByKeyWord = async (userId, requestQuery) => {
   const skip = +page <= 1 ? 0 : (+page - 1) * +limit;
 
   const products = await Product.find(query)
-    .select('name description images price costPrice quantity manufacturerId categoryId ratings inStock')
+    .select('name description images price costPrice quantity manufacturerId categoryId ratings inStock code')
     .populate([
       {
         path: 'manufacturerId',

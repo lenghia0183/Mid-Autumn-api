@@ -67,6 +67,10 @@ const listRoutesApi = [
     path: '/ai',
     route: require('./ai.route'),
   },
+  {
+    path: '/inventory',
+    route: require('./inventory.route'),
+  },
 ];
 
 listRoutesApi.forEach((route) => {

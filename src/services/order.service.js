@@ -172,15 +172,19 @@ const createOrder = async (orderBody, userId) => {
     recipientPhone,
   });
 
-  // Reduce product quantity for each ordered item
+  // Reduce product quantity for each ordered item and record inventory export
+  const inventoryService = require('./inventory.service');
   await Promise.all(
     cart.cartDetails.map(async (cartDetail) => {
       const product = cartDetail.productId;
-      const newQuantity = product.quantity - cartDetail.quantity;
 
-      await productService.updateProductById(product._id, {
-        quantity: newQuantity,
-        inStock: newQuantity > 0,
+      // Ghi lại lịch sử xuất kho
+      await inventoryService.exportFromInventory({
+        productId: product._id,
+        quantity: cartDetail.quantity,
+        reason: 'Xuất kho cho đơn hàng',
+        userId: userId,
+        orderId: order._id,
       });
     }),
   );
@@ -310,14 +314,18 @@ const restoreProductQuantities = async (order) => {
 
   if (!populatedOrder) return;
 
+  const inventoryService = require('./inventory.service');
   await Promise.all(
     populatedOrder.cartDetails.map(async (cartDetail) => {
       const product = cartDetail.productId;
-      const updatedQuantity = product.quantity + cartDetail.quantity;
 
-      await productService.updateProductById(product._id, {
-        quantity: updatedQuantity,
-        inStock: true,
+      // Ghi lại lịch sử nhập kho khi hoàn trả
+      await inventoryService.addToInventory({
+        productId: product._id,
+        quantity: cartDetail.quantity,
+        reason: 'Hoàn trả do hủy đơn hàng',
+        note: `Đơn hàng ${order._id} bị hủy`,
+        userId: order.userId,
       });
     }),
   );

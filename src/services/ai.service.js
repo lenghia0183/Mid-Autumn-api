@@ -25,7 +25,6 @@ const generateProductDescription = async (prompt) => {
     `;
 
     const result = await model.generateContent(fullPrompt);
-    console.log('result', result.response);
     const response = await result.response;
 
     const text = response.text();

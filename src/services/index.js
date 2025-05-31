@@ -18,3 +18,4 @@ module.exports.contactService = require('./contact.service');
 module.exports.chatService = require('./chat.service');
 module.exports.visitService = require('./visit.service');
 module.exports.aiService = require('./ai.service');
+module.exports.inventoryService = require('./inventory.service');

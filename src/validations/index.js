@@ -14,3 +14,4 @@ module.exports.contactValidation = require('./contact.validation');
 module.exports.visitValidation = require('./visit.validation');
 module.exports.paymentValidation = require('./payment.validation');
 module.exports.aiValidation = require('./ai.validation');
+module.exports.inventoryValidation = require('./inventory.validation');

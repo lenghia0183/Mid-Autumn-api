@@ -15,3 +15,4 @@ module.exports.contactController = require('./contact.controller');
 module.exports.chatController = require('./chat.controller');
 module.exports.visitController = require('./visit.controller');
 module.exports.aiController = require('./ai.controller');
+module.exports.inventoryController = require('./inventory.controller');
