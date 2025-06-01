@@ -6,6 +6,18 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    nameEn: {
+      type: String,
+      required: false,
+    },
+    nameZh: {
+      type: String,
+      required: false,
+    },
+    nameJa: {
+      type: String,
+      required: false,
+    },
     code: {
       type: String,
       required: true,
@@ -34,6 +46,18 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     description: {
+      type: String,
+      default: '',
+    },
+    descriptionEn: {
+      type: String,
+      default: '',
+    },
+    descriptionZh: {
+      type: String,
+      default: '',
+    },
+    descriptionJa: {
       type: String,
       default: '',
     },

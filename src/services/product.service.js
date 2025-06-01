@@ -103,8 +103,14 @@ const getProductByKeyWord = async (userId, requestQuery) => {
       {
         $or: [
           { name: { $regex: new RegExp(keyword, 'i') } },
+          { nameEn: { $regex: new RegExp(keyword, 'i') } },
+          { nameZh: { $regex: new RegExp(keyword, 'i') } },
+          { nameJa: { $regex: new RegExp(keyword, 'i') } },
           { slug: { $regex: new RegExp(keyword, 'i') } },
           { description: { $regex: new RegExp(keyword, 'i') } },
+          { descriptionEn: { $regex: new RegExp(keyword, 'i') } },
+          { descriptionZh: { $regex: new RegExp(keyword, 'i') } },
+          { descriptionJa: { $regex: new RegExp(keyword, 'i') } },
         ],
       },
     ],
@@ -147,7 +153,9 @@ const getProductByKeyWord = async (userId, requestQuery) => {
   const skip = +page <= 1 ? 0 : (+page - 1) * +limit;
 
   const products = await Product.find(query)
-    .select('name description images price costPrice quantity manufacturerId categoryId ratings inStock code')
+    .select(
+      'name nameEn nameZh nameJa description descriptionEn descriptionZh descriptionJa images price costPrice quantity manufacturerId categoryId ratings inStock code',
+    )
     .populate([
       {
         path: 'manufacturerId',
