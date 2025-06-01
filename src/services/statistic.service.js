@@ -100,15 +100,19 @@ const getRevenue = async (query) => {
       const twelveMonthsAgo = new Date();
       twelveMonthsAgo.setMonth(now.getMonth() - 12);
       matchStage.createdAt = { $gte: twelveMonthsAgo };
+    } else if (filterBy === 'year') {
+      // Last 5 years
+      const fiveYearsAgo = new Date();
+      fiveYearsAgo.setFullYear(now.getFullYear() - 5);
+      matchStage.createdAt = { $gte: fiveYearsAgo };
     }
-    // For 'year', we don't set a date filter to get all years
   }
 
-  // Define group stages based on filterBy parameter
+  // Define time grouping and additional stages based on filterBy
   let timeGrouping;
   let sortStage;
   let projectStage;
-  let additionalStages = [];
+  const additionalStages = [];
 
   if (filterBy === 'day') {
     timeGrouping = {
@@ -129,8 +133,11 @@ const getRevenue = async (query) => {
       day: '$_id.day',
       date: '$_id.date',
       revenue: '$revenue',
-      // Add the actual date for display
-      formattedDate: { $dateToString: { format: '%Y-%m-%d', date: '$firstDate' } },
+      profit: '$profit',
+      // Format date as day/month/year
+      formattedDate: {
+        $concat: [{ $toString: '$_id.day' }, '/', { $toString: '$_id.month' }, '/', { $toString: '$_id.year' }],
+      },
     };
     // Add a stage to get the first date for each group
     additionalStages.push({
@@ -142,6 +149,7 @@ const getRevenue = async (query) => {
           date: '$_id.date',
         },
         revenue: { $first: '$revenue' },
+        profit: { $first: '$profit' },
         firstDate: { $first: '$createdAt' },
       },
     });
@@ -159,9 +167,26 @@ const getRevenue = async (query) => {
       year: '$_id.year',
       week: '$_id.week',
       revenue: '$revenue',
+      profit: '$profit',
       // Calculate start and end dates for each week
       startDate: '$weekStart',
       endDate: '$weekEnd',
+      // Format date range as day/month/year - day/month/year
+      formattedDate: {
+        $concat: [
+          { $substr: ['$weekStart', 8, 2] },
+          '/',
+          { $substr: ['$weekStart', 5, 2] },
+          '/',
+          { $substr: ['$weekStart', 0, 4] },
+          ' - ',
+          { $substr: ['$weekEnd', 8, 2] },
+          '/',
+          { $substr: ['$weekEnd', 5, 2] },
+          '/',
+          { $substr: ['$weekEnd', 0, 4] },
+        ],
+      },
     };
     // Add stages to calculate week start and end dates
     additionalStages.push({
@@ -171,6 +196,7 @@ const getRevenue = async (query) => {
           week: '$_id.week',
         },
         revenue: { $first: '$revenue' },
+        profit: { $first: '$profit' },
         minDate: { $min: '$createdAt' },
         maxDate: { $max: '$createdAt' },
       },
@@ -192,13 +218,16 @@ const getRevenue = async (query) => {
       _id: 0,
       year: '$_id.year',
       revenue: '$revenue',
+      profit: '$profit',
       // Add year start and end dates
       startDate: {
-        $dateToString: { format: '%Y-01-01', date: { $dateFromParts: { year: '$_id.year', month: 1, day: 1 } } },
+        $dateToString: { format: '%Y-%m-%d', date: { $dateFromParts: { year: '$_id.year', month: 1, day: 1 } } },
       },
       endDate: {
-        $dateToString: { format: '%Y-12-31', date: { $dateFromParts: { year: '$_id.year', month: 12, day: 31 } } },
+        $dateToString: { format: '%Y-%m-%d', date: { $dateFromParts: { year: '$_id.year', month: 12, day: 31 } } },
       },
+      // Format date as year
+      formattedDate: { $toString: '$_id.year' },
     };
   } else {
     // Default: month
@@ -215,6 +244,7 @@ const getRevenue = async (query) => {
       year: '$_id.year',
       month: '$_id.month',
       revenue: '$revenue',
+      profit: '$profit',
       // Calculate month start and end dates
       startDate: {
         $dateToString: {
@@ -246,6 +276,10 @@ const getRevenue = async (query) => {
           },
         },
       },
+      // Format date as month/year
+      formattedDate: {
+        $concat: [{ $toString: '$_id.month' }, '/', { $toString: '$_id.year' }],
+      },
     };
     // Add a stage to calculate the last day of each month
     additionalStages.push({
@@ -276,7 +310,58 @@ const getRevenue = async (query) => {
   // Build the aggregation pipeline
   const pipeline = [
     { $match: matchStage },
-    { $group: { _id: timeGrouping, revenue: { $sum: '$totalAmount' }, createdAt: { $first: '$createdAt' } } },
+    // Lookup cart details to get product information
+    {
+      $lookup: {
+        from: 'cartdetails',
+        localField: 'cartDetails',
+        foreignField: '_id',
+        as: 'cartDetailsData',
+      },
+    },
+    // Unwind the cartDetailsData array
+    { $unwind: '$cartDetailsData' },
+    // Lookup products to get cost price
+    {
+      $lookup: {
+        from: 'products',
+        localField: 'cartDetailsData.productId',
+        foreignField: '_id',
+        as: 'productData',
+      },
+    },
+    // Unwind the productData array
+    { $unwind: '$productData' },
+    // Calculate cost for each cart detail
+    {
+      $addFields: {
+        itemCost: { $multiply: ['$cartDetailsData.quantity', '$productData.costPrice'] },
+      },
+    },
+    // Group back to order level with cost calculation,
+    {
+      $group: {
+        _id: '$_id',
+        orderId: { $first: '$_id' },
+        totalAmount: { $first: '$totalAmount' },
+        createdAt: { $first: '$createdAt' },
+        totalCost: { $sum: '$itemCost' },
+      },
+    },
+    // Group by time period
+    {
+      $group: {
+        _id: timeGrouping,
+        revenue: { $sum: '$totalAmount' },
+        // Calculate profit (revenue - cost)
+        profit: {
+          $sum: {
+            $subtract: ['$totalAmount', '$totalCost'],
+          },
+        },
+        createdAt: { $first: '$createdAt' },
+      },
+    },
   ];
 
   // Add any additional stages specific to the filter type
