@@ -38,16 +38,12 @@ const getProductById = async (productId, userId) => {
     }
   }
 
-  // Đảm bảo trả về thông tin tồn kho
-  const productObj = product.toObject();
-  productObj.stockStatus = productObj.inStock ? 'Còn hàng' : 'Hết hàng';
-  productObj.availableQuantity = productObj.quantity;
-
-  return productObj;
+  return product;
 };
 
 const deleteProductById = async (productId) => {
   const product = await getProductById(productId);
+
   await Product.deleteOne(product);
   return product;
 };
