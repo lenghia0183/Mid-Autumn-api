@@ -12,6 +12,15 @@ const generateProductDescription = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(response(httpStatus.OK, aiMessage().GENERATION_SUCCESS, { description }));
 });
 
+const translateProductInfo = catchAsync(async (req, res) => {
+  const { name, description } = req.body;
+
+  const translations = await aiService.translateProductInfo(name, description);
+
+  res.status(httpStatus.OK).json(response(httpStatus.OK, aiMessage().TRANSLATION_SUCCESS, translations));
+});
+
 module.exports = {
   generateProductDescription,
+  translateProductInfo,
 };

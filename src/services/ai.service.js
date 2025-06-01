@@ -36,6 +36,60 @@ const generateProductDescription = async (prompt) => {
   }
 };
 
+const translateProductInfo = async (name, description) => {
+  try {
+    const model = genAI.getGenerativeModel({ model: 'models/gemini-1.5-flash' });
+
+    const fullPrompt = `Bạn là một chuyên gia dịch thuật cho các sản phẩm thương mại điện tử.
+    Hãy dịch tên sản phẩm và mô tả sản phẩm sau đây sang tiếng Anh, tiếng Trung, và tiếng Nhật.
+    
+    Tên sản phẩm: ${name}
+    Mô tả sản phẩm: ${description}
+    
+    Yêu cầu:
+    - Dịch chính xác, tự nhiên, phù hợp với văn hóa của từng ngôn ngữ
+    - Giữ nguyên các thông số kỹ thuật, số liệu
+    - Đảm bảo ngữ pháp và cách diễn đạt phù hợp với từng ngôn ngữ
+    
+    Trả về kết quả theo định dạng JSON như sau:
+    {
+      "english": {
+        "name": "Tên sản phẩm bằng tiếng Anh",
+        "description": "Mô tả sản phẩm bằng tiếng Anh"
+      },
+      "chinese": {
+        "name": "Tên sản phẩm bằng tiếng Trung",
+        "description": "Mô tả sản phẩm bằng tiếng Trung không cần phiên âm"
+      },
+      "japanese": {
+        "name": "Tên sản phẩm bằng tiếng Nhật",
+        "description": "Mô tả sản phẩm bằng tiếng Nhật không cần phên âm"
+      }
+    }`;
+
+    const result = await model.generateContent(fullPrompt);
+    const response = await result.response;
+
+    const text = response.text();
+
+    const jsonMatch = text.match(/```json\n([\s\S]*?)\n```/) || text.match(/\{[\s\S]*\}/);
+    let translationData;
+
+    if (jsonMatch) {
+      const jsonString = jsonMatch[1] || jsonMatch[0];
+      translationData = JSON.parse(jsonString);
+    } else {
+      throw new Error('Invalid response format from AI model');
+    }
+
+    return translationData;
+  } catch (error) {
+    console.error('AI translation error:', error);
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, aiMessage().TRANSLATION_FAILURE);
+  }
+};
+
 module.exports = {
   generateProductDescription,
+  translateProductInfo,
 };

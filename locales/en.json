@@ -72,5 +72,12 @@
     "updateSuccess": "manufacturer updated successfully",
     "deleteSuccess": "manufacturer deleted successfully",
     "notFound": "manufacturer not found"
+  },
+  "ai": {
+    "generationSuccess": "Product description generated successfully",
+    "generationFailure": "Failed to generate product description",
+    "promptRequired": "Product information is required",
+    "translationSuccess": "Product information translated successfully",
+    "translationFailure": "Failed to translate product information"
   }
 }

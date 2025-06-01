@@ -14,4 +14,12 @@ aiRouter.post(
   aiController.generateProductDescription,
 );
 
+aiRouter.post(
+  '/translate-product',
+  authenticate,
+  authorize('admin'),
+  validate(aiValidation.translateProductInfo),
+  aiController.translateProductInfo,
+);
+
 module.exports = aiRouter;

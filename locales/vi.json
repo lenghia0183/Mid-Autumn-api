@@ -139,6 +139,9 @@
   "visit": "visit",
   "ai": {
     "generationSuccess": "Tạo mô tả thành công",
-    "generationFailure": "Tạo mô tả thất bại"
+    "generationFailure": "Tạo mô tả thất bại",
+    "promptRequired": "Yêu cầu nhập thông tin sản phẩm",
+    "translationSuccess": "Dịch thông tin sản phẩm thành công",
+    "translationFailure": "Dịch thông tin sản phẩm thất bại"
   }
 }
