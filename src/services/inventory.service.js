@@ -90,7 +90,7 @@ const getInventoryStock = async (query) => {
   }
 
   if (lowStock === 'true') {
-    productQuery.quantity = { $lte: 10 };
+    productQuery.quantity = { $lte: 10, $gt: 0 };
   }
 
   const skip = (page - 1) * limit;
@@ -105,6 +105,11 @@ const getInventoryStock = async (query) => {
 
   const total = await Product.countDocuments(productQuery);
 
+  // Get counts for different stock statuses
+  const outOfStockCount = await Product.countDocuments({ ...productQuery, quantity: 0 });
+  const lowStockCount = await Product.countDocuments({ ...productQuery, quantity: { $gt: 0, $lte: 10 } });
+  const inStockCount = await Product.countDocuments({ ...productQuery, quantity: { $gt: 10 } });
+
   return {
     products,
     pagination: {
@@ -112,6 +117,12 @@ const getInventoryStock = async (query) => {
       limit: parseInt(limit),
       total,
       pages: Math.ceil(total / limit),
+    },
+    stockSummary: {
+      outOfStock: outOfStockCount,
+      lowStock: lowStockCount,
+      inStock: inStockCount,
+      total: outOfStockCount + lowStockCount + inStockCount,
     },
   };
 };
