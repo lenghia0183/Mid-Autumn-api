@@ -6,7 +6,6 @@ const { authenticate, authorize } = require('../../middlewares/auth.middleware')
 
 const inventoryRouter = express.Router();
 
-// Tất cả các route inventory đều yêu cầu authentication và admin role
 inventoryRouter.use(authenticate);
 inventoryRouter.use(authorize('admin'));
 
@@ -20,6 +19,16 @@ inventoryRouter.get(
   inventoryController.getInventoryHistory,
 );
 
-inventoryRouter.get('/statistics', inventoryController.getInventoryStatistics);
+inventoryRouter.get(
+  '/:inventoryId',
+  validate(inventoryValidation.getInventoryById),
+  inventoryController.getInventoryById,
+);
+
+inventoryRouter.put(
+  '/:inventoryId',
+  validate(inventoryValidation.updateInventory),
+  inventoryController.updateInventory,
+);
 
 module.exports = inventoryRouter;

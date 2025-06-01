@@ -26,15 +26,20 @@ const getInventoryHistory = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json(response(httpStatus.OK, inventoryMessage().GET_HISTORY_SUCCESS, result));
 });
 
-const getInventoryStatistics = catchAsync(async (req, res) => {
-  const result = await inventoryService.getInventoryStatistics();
+const getInventoryById = catchAsync(async (req, res) => {
+  const inventory = await inventoryService.getInventoryById(req.params.inventoryId);
+  res.status(httpStatus.OK).json(response(httpStatus.OK, inventoryMessage().GET_DETAIL_SUCCESS, inventory));
+});
 
-  res.status(httpStatus.OK).json(response(httpStatus.OK, inventoryMessage().GET_STATISTICS_SUCCESS, result));
+const updateInventory = catchAsync(async (req, res) => {
+  const inventory = await inventoryService.updateInventoryById(req.params.inventoryId, req.body);
+  res.status(httpStatus.OK).json(response(httpStatus.OK, inventoryMessage().UPDATE_SUCCESS, inventory));
 });
 
 module.exports = {
   addToInventory,
   getInventoryStock,
   getInventoryHistory,
-  getInventoryStatistics,
+  getInventoryById,
+  updateInventory,
 };

@@ -38,7 +38,12 @@ const getProductById = async (productId, userId) => {
     }
   }
 
-  return product;
+  // Đảm bảo trả về thông tin tồn kho
+  const productObj = product.toObject();
+  productObj.stockStatus = productObj.inStock ? 'Còn hàng' : 'Hết hàng';
+  productObj.availableQuantity = productObj.quantity;
+
+  return productObj;
 };
 
 const deleteProductById = async (productId) => {
@@ -170,6 +175,10 @@ const getProductByKeyWord = async (userId, requestQuery) => {
       product['image'] = product.images[0] || '';
     }
     delete product.images;
+
+    // Thêm thông tin trạng thái tồn kho
+    product.stockStatus = product.inStock ? 'Còn hàng' : 'Hết hàng';
+    product.availableQuantity = product.quantity;
   });
 
   const totalSearch = await Product.countDocuments(query);

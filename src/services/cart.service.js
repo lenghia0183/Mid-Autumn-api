@@ -44,12 +44,15 @@ const getCartById = async (cartId) => {
     path: 'cartDetails',
     populate: {
       path: 'productId',
+      select: 'name code price costPrice quantity inStock images description ratings',
       populate: [
         {
           path: 'manufacturerId',
+          select: 'name',
         },
         {
           path: 'categoryId',
+          select: 'name',
         },
       ],
     },
@@ -57,6 +60,17 @@ const getCartById = async (cartId) => {
   if (!cart) {
     throw new ApiError(httpStatus.NOT_FOUND, cartMessage().NOT_FOUND);
   }
+
+  // Thêm thông tin tồn kho cho từng sản phẩm trong giỏ hàng
+  if (cart.cartDetails) {
+    cart.cartDetails.forEach((cartDetail) => {
+      if (cartDetail.productId) {
+        cartDetail.productId.stockStatus = cartDetail.productId.inStock ? 'Còn hàng' : 'Hết hàng';
+        cartDetail.productId.availableQuantity = cartDetail.productId.quantity;
+      }
+    });
+  }
+
   return cart;
 };
 

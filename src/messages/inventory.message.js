@@ -13,6 +13,9 @@ const inventoryMessage = () => {
     PRODUCT_NOT_FOUND: 'Sản phẩm không tồn tại',
     INSUFFICIENT_STOCK: 'Số lượng tồn kho không đủ',
     INVALID_QUANTITY: 'Số lượng không hợp lệ',
+    GET_DETAIL_SUCCESS: 'Lấy thông tin chi tiết lịch sử kho hàng thành công',
+    UPDATE_SUCCESS: 'Cập nhật lịch sử kho hàng thành công',
+    NOT_FOUND: 'Không tìm thấy bản ghi lịch sử kho hàng',
   };
 };
 

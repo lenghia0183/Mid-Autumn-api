@@ -32,12 +32,15 @@ const getOrdersByUserId = async (userId, requestQuery) => {
       path: 'cartDetails',
       populate: {
         path: 'productId',
+        select: 'name code price costPrice quantity inStock images description ratings',
         populate: [
           {
             path: 'manufacturerId',
+            select: 'name',
           },
           {
             path: 'categoryId',
+            select: 'name',
           },
         ],
       },
@@ -86,12 +89,15 @@ const getOrders = async (requestQuery) => {
       path: 'cartDetails',
       populate: {
         path: 'productId',
+        select: 'name code price costPrice quantity inStock images description ratings',
         populate: [
           {
             path: 'manufacturerId',
+            select: 'name',
           },
           {
             path: 'categoryId',
+            select: 'name',
           },
         ],
       },
@@ -223,12 +229,15 @@ const getOderByIdV2 = async (userId, orderId) => {
     path: 'cartDetails',
     populate: {
       path: 'productId',
+      select: 'name code price costPrice quantity inStock images description ratings',
       populate: [
         {
           path: 'manufacturerId',
+          select: 'name',
         },
         {
           path: 'categoryId',
+          select: 'name',
         },
       ],
     },

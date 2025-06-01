@@ -32,8 +32,30 @@ const getInventoryHistory = {
   }),
 };
 
+const getInventoryById = {
+  params: Joi.object().keys({
+    inventoryId: Joi.string().required().custom(objectId),
+  }),
+};
+
+const updateInventory = {
+  params: Joi.object().keys({
+    inventoryId: Joi.string().required().custom(objectId),
+  }),
+  body: Joi.object()
+    .keys({
+      note: Joi.string().allow('', null),
+      reason: Joi.string(),
+      productId: Joi.string().custom(objectId),
+      quantity: Joi.number().integer().min(1),
+    })
+    .min(1),
+};
+
 module.exports = {
   addToInventory,
   getInventoryStock,
   getInventoryHistory,
+  getInventoryById,
+  updateInventory,
 };

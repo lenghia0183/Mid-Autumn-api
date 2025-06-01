@@ -2,16 +2,11 @@ const httpStatus = require('http-status');
 const { Inventory, Product } = require('../models');
 const ApiError = require('../utils/ApiError');
 const { inventoryMessage } = require('../messages');
+const { productService } = require('.');
 
-/**
- * Thêm sản phẩm vào kho (nhập kho)
- * @param {Object} inventoryData
- * @returns {Promise<Object>}
- */
 const addToInventory = async (inventoryData) => {
   const { productId, quantity, reason, note, userId } = inventoryData;
 
-  // Kiểm tra sản phẩm có tồn tại không
   const product = await Product.findById(productId);
   if (!product) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Sản phẩm không tồn tại');
@@ -20,7 +15,6 @@ const addToInventory = async (inventoryData) => {
   const previousQuantity = product.quantity;
   const newQuantity = previousQuantity + quantity;
 
-  // Tạo bản ghi lịch sử nhập kho
   const inventoryRecord = await Inventory.create({
     productId,
     type: 'import',
@@ -32,13 +26,11 @@ const addToInventory = async (inventoryData) => {
     newQuantity,
   });
 
-  // Cập nhật số lượng sản phẩm
   await Product.findByIdAndUpdate(productId, {
     quantity: newQuantity,
     inStock: newQuantity > 0,
   });
 
-  // Populate thông tin sản phẩm và user
   const populatedRecord = await Inventory.findById(inventoryRecord._id)
     .populate('productId', 'name code')
     .populate('userId', 'name email');
@@ -46,21 +38,14 @@ const addToInventory = async (inventoryData) => {
   return populatedRecord;
 };
 
-/**
- * Xuất kho (khi có đơn hàng)
- * @param {Object} exportData
- * @returns {Promise<Object>}
- */
 const exportFromInventory = async (exportData) => {
   const { productId, quantity, reason, userId, orderId } = exportData;
 
-  // Kiểm tra sản phẩm có tồn tại không
   const product = await Product.findById(productId);
   if (!product) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Sản phẩm không tồn tại');
   }
 
-  // Kiểm tra số lượng tồn kho
   if (product.quantity < quantity) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Số lượng tồn kho không đủ');
   }
@@ -68,7 +53,6 @@ const exportFromInventory = async (exportData) => {
   const previousQuantity = product.quantity;
   const newQuantity = previousQuantity - quantity;
 
-  // Tạo bản ghi lịch sử xuất kho
   const inventoryRecord = await Inventory.create({
     productId,
     type: 'export',
@@ -80,7 +64,6 @@ const exportFromInventory = async (exportData) => {
     newQuantity,
   });
 
-  // Cập nhật số lượng sản phẩm
   await Product.findByIdAndUpdate(productId, {
     quantity: newQuantity,
     inStock: newQuantity > 0,
@@ -89,35 +72,23 @@ const exportFromInventory = async (exportData) => {
   return inventoryRecord;
 };
 
-/**
- * Lấy danh sách tồn kho
- * @param {Object} query
- * @returns {Promise<Object>}
- */
 const getInventoryStock = async (query) => {
   const { page = 1, limit = 10, search, categoryId, manufacturerId, lowStock } = query;
 
   let productQuery = {};
 
-  // Tìm kiếm theo tên hoặc mã sản phẩm
   if (search) {
-    productQuery.$or = [
-      { name: { $regex: search, $options: 'i' } },
-      { code: { $regex: search, $options: 'i' } },
-    ];
+    productQuery.$or = [{ name: { $regex: search, $options: 'i' } }, { code: { $regex: search, $options: 'i' } }];
   }
 
-  // Lọc theo danh mục
   if (categoryId) {
     productQuery.categoryId = categoryId;
   }
 
-  // Lọc theo nhà sản xuất
   if (manufacturerId) {
     productQuery.manufacturerId = manufacturerId;
   }
 
-  // Lọc sản phẩm sắp hết hàng (quantity <= 10)
   if (lowStock === 'true') {
     productQuery.quantity = { $lte: 10 };
   }
@@ -145,35 +116,17 @@ const getInventoryStock = async (query) => {
   };
 };
 
-/**
- * Lấy lịch sử nhập/xuất kho
- * @param {Object} query
- * @returns {Promise<Object>}
- */
 const getInventoryHistory = async (query) => {
-  const { page = 1, limit = 10, productId, type, startDate, endDate } = query;
+  const { page = 1, limit = 10, productId, type } = query;
 
   let inventoryQuery = {};
 
-  // Lọc theo sản phẩm
   if (productId) {
     inventoryQuery.productId = productId;
   }
 
-  // Lọc theo loại (import/export)
   if (type) {
     inventoryQuery.type = type;
-  }
-
-  // Lọc theo khoảng thời gian
-  if (startDate || endDate) {
-    inventoryQuery.createdAt = {};
-    if (startDate) {
-      inventoryQuery.createdAt.$gte = new Date(startDate);
-    }
-    if (endDate) {
-      inventoryQuery.createdAt.$lte = new Date(endDate);
-    }
   }
 
   const skip = (page - 1) * limit;
@@ -199,40 +152,105 @@ const getInventoryHistory = async (query) => {
   };
 };
 
-/**
- * Lấy thống kê tồn kho
- * @returns {Promise<Object>}
- */
-const getInventoryStatistics = async () => {
-  // Tổng số sản phẩm
-  const totalProducts = await Product.countDocuments();
+const getInventoryById = async (inventoryId) => {
+  const inventory = await Inventory.findById(inventoryId)
+    .populate('productId', 'name code images')
+    .populate('userId', 'name email')
+    .populate('orderId', 'status');
 
-  // Sản phẩm còn hàng
-  const inStockProducts = await Product.countDocuments({ inStock: true });
+  if (!inventory) {
+    throw new ApiError(httpStatus.NOT_FOUND, inventoryMessage().NOT_FOUND);
+  }
 
-  // Sản phẩm hết hàng
-  const outOfStockProducts = await Product.countDocuments({ inStock: false });
+  return inventory;
+};
 
-  // Sản phẩm sắp hết hàng (quantity <= 10)
-  const lowStockProducts = await Product.countDocuments({ quantity: { $lte: 10, $gt: 0 } });
+const updateInventoryById = async (inventoryId, updateBody) => {
+  const inventory = await getInventoryById(inventoryId);
+  const originalProductId = inventory.productId._id.toString();
+  const originalQuantity = inventory.quantity;
 
-  // Tổng giá trị tồn kho
-  const totalStockValue = await Product.aggregate([
-    {
-      $group: {
-        _id: null,
-        totalValue: { $sum: { $multiply: ['$quantity', '$costPrice'] } },
-      },
-    },
-  ]);
+  // Update basic fields
+  if (updateBody.note !== undefined) {
+    inventory.note = updateBody.note;
+  }
 
-  return {
-    totalProducts,
-    inStockProducts,
-    outOfStockProducts,
-    lowStockProducts,
-    totalStockValue: totalStockValue[0]?.totalValue || 0,
-  };
+  if (updateBody.reason !== undefined) {
+    inventory.reason = updateBody.reason;
+  }
+
+  // Handle product and quantity changes
+  if (updateBody.productId || updateBody.quantity !== undefined) {
+    // Get original product
+    const originalProduct = await productService.getProductById(originalProductId);
+
+    // Revert the original inventory operation
+    if (inventory.type === 'import') {
+      // For import, decrease the original product's quantity
+      await productService.updateProductById(originalProductId, {
+        quantity: originalProduct.quantity - originalQuantity,
+        inStock: originalProduct.quantity - originalQuantity > 0,
+      });
+    } else if (inventory.type === 'export') {
+      // For export, increase the original product's quantity
+      await productService.updateProductById(originalProductId, {
+        quantity: originalProduct.quantity + originalQuantity,
+        inStock: true, // If we're adding back, it will always be in stock
+      });
+    }
+
+    // Handle product change
+    const targetProductId = updateBody.productId || originalProductId;
+    const targetQuantity = updateBody.quantity !== undefined ? updateBody.quantity : originalQuantity;
+
+    // Get target product (could be the same as original or a new one)
+    const targetProduct = await productService.getProductById(targetProductId);
+
+    // Apply the new inventory operation
+    if (inventory.type === 'import') {
+      // For import, increase the target product's quantity
+      await productService.updateProductById(targetProductId, {
+        quantity: targetProduct.quantity + targetQuantity,
+        inStock: true, // If we're adding, it will always be in stock
+      });
+
+      // Update inventory record
+      inventory.previousQuantity = targetProduct.quantity;
+      inventory.newQuantity = targetProduct.quantity + targetQuantity;
+    } else if (inventory.type === 'export') {
+      // For export, check if there's enough stock
+      if (targetProduct.quantity < targetQuantity) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Số lượng tồn kho không đủ');
+      }
+
+      // Decrease the target product's quantity
+      await productService.updateProductById(targetProductId, {
+        quantity: targetProduct.quantity - targetQuantity,
+        inStock: targetProduct.quantity - targetQuantity > 0,
+      });
+
+      // Update inventory record
+      inventory.previousQuantity = targetProduct.quantity;
+      inventory.newQuantity = targetProduct.quantity - targetQuantity;
+    }
+
+    // Update product and quantity in inventory record
+    if (updateBody.productId) {
+      inventory.productId = targetProductId;
+    }
+
+    if (updateBody.quantity !== undefined) {
+      inventory.quantity = targetQuantity;
+    }
+  }
+
+  await inventory.save();
+
+  // Return fully populated inventory record
+  return await Inventory.findById(inventoryId)
+    .populate('productId', 'name code')
+    .populate('userId', 'name email')
+    .populate('orderId', 'status');
 };
 
 module.exports = {
@@ -240,5 +258,6 @@ module.exports = {
   exportFromInventory,
   getInventoryStock,
   getInventoryHistory,
-  getInventoryStatistics,
+  getInventoryById,
+  updateInventoryById,
 };
