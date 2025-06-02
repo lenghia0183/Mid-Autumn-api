@@ -3,9 +3,19 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const { productMessage } = require('../messages');
 const { getFavoriteListByUserId } = require('./favorite.service');
+const manufacturerService = require('./manufacturer.service');
+const categoryService = require('./category.service');
+const generateProductCode = require('../utils/generateProductCode');
 
 const createProduct = async (productBody) => {
   const product = await Product.create(productBody);
+
+  const manufacturer = await manufacturerService.getManufacturerById(productBody.manufacturerId);
+  const category = await categoryService.getCategoryById(productBody.categoryId);
+
+  product.code = generateProductCode(manufacturer.name, category.name, product._id.toString());
+  await product.save();
+
   return product;
 };
 

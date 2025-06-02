@@ -7,7 +7,7 @@ const createProduct = {
     nameEn: Joi.string().allow(null, ''),
     nameZh: Joi.string().allow(null, ''),
     nameJa: Joi.string().allow(null, ''),
-    code: Joi.string().required(),
+    code: Joi.string().allow(null, ''),
     price: Joi.number().required(),
     costPrice: Joi.number().required(),
     quantity: Joi.number().default(0),
