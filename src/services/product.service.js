@@ -54,7 +54,9 @@ const getProductById = async (productId, userId) => {
 const deleteProductById = async (productId) => {
   const product = await getProductById(productId);
 
-  await Product.deleteOne(product);
+  // await Product.deleteOne(product);
+  product.deletedAt = new Date();
+  await product.save();
   return product;
 };
 
@@ -118,6 +120,9 @@ const getProductByKeyWord = async (userId, requestQuery) => {
           { descriptionZh: { $regex: new RegExp(keyword, 'i') } },
           { descriptionJa: { $regex: new RegExp(keyword, 'i') } },
         ],
+      },
+      {
+        deletedAt: null,
       },
     ],
   };
