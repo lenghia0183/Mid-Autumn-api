@@ -29,7 +29,7 @@ const createOrder = {
 
     shippingFee: Joi.number().required(),
     paymentMethod: Joi.string().required(),
-    paymentGateway: Joi.string().required(),
+    paymentGateway: Joi.string().allow(null, ''),
     note: Joi.string().allow(null, ''),
   }),
 };

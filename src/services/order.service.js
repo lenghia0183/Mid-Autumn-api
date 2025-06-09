@@ -207,10 +207,12 @@ const createOrder = async (orderBody, userId) => {
     return paymentResponse;
   } else if (paymentGateway === 'ZaloPay') {
     const paymentResponse = await paymentService.paymentWithZaloPay(order, cart);
-    console.log('paymentResponse: ', paymentResponse);
     order.payUrl = paymentResponse.payUrl;
     await order.save();
     return paymentResponse;
+  } else {
+    cart.status = 'inactive';
+    await cart.save();
   }
 
   return order;
