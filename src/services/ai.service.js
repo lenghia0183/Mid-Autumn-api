@@ -8,7 +8,7 @@ const genAI = new GoogleGenerativeAI(env.gemini.apiKey);
 
 const generateProductDescription = async (prompt) => {
   try {
-    const model = genAI.getGenerativeModel({ model: 'models/gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'models/gemini-2.0-flash-001' });
 
     const fullPrompt = `Bạn là một chuyên gia viết mô tả sản phẩm cho các trang thương mại điện tử. 
     Hãy viết một đoạn mô tả sản phẩm hấp dẫn, tối ưu SEO, nhấn mạnh các tính năng và lợi ích chính.
@@ -25,7 +25,7 @@ const generateProductDescription = async (prompt) => {
     `;
 
     const result = await model.generateContent(fullPrompt);
-    const response = await result.response;
+    const response = result.response;
 
     const text = response.text();
 
@@ -38,7 +38,7 @@ const generateProductDescription = async (prompt) => {
 
 const translateProductInfo = async (name, description) => {
   try {
-    const model = genAI.getGenerativeModel({ model: 'models/gemini-1.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'models/gemini-2.0-flash-001' });
 
     const fullPrompt = `Bạn là một chuyên gia dịch thuật cho các sản phẩm thương mại điện tử.
     Hãy dịch tên sản phẩm và mô tả sản phẩm sau đây sang tiếng Anh, tiếng Trung, và tiếng Nhật.
