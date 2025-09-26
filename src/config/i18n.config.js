@@ -5,7 +5,7 @@ const cookieName = 'lang';
 const headerName = 'accept-language';
 const languageDefault = 'vi';
 
-const locales = ['en', 'vi'];
+const locales = ['en', 'vi', 'zh', 'ja'];
 
 class I18nService {
   constructor() {

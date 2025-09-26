@@ -1,0 +1,147 @@
+{
+  "system": {
+    "resourceNotFound": "未找到资源",
+    "imageTypeInvalid": "不支持的图片格式",
+    "imageMaxSize": "图片文件过大，请重新选择"
+  },
+  "user": {
+    "notFound": "未找到用户",
+    "existsEmail": "邮箱已存在",
+    "findSuccess": "成功找到用户",
+    "findListSuccess": "成功获取用户列表",
+    "createSuccess": "成功创建新用户",
+    "updateSuccess": "成功更新用户",
+    "deleteSuccess": "成功删除用户",
+    "incorrectId": "MongoDB ID 格式不正确",
+    "passwordLength": "密码必须大于8个字符",
+    "passwordInvalid": "密码必须包含至少一个字母和一个数字",
+    "emailInvalid": "邮箱格式不正确",
+    "roleInvalid": "角色不正确",
+    "lockedSuccess": "成功锁定用户",
+    "unlockedSuccess": "成功解锁用户",
+    "userLocked": "账户已被锁定",
+    "fullnameLength": "全名必须在3到50个字符之间",
+    "phoneLength": "电话号码必须在8到13个字符之间"
+  },
+  "auth": {
+    "invalidLogin": "用户名或密码不正确。请重试。",
+    "loginSuccess": "登录成功！",
+    "registerSuccess": "账户注册成功！",
+    "refreshTokenSuccess": "令牌刷新成功。",
+    "invalidToken": "令牌无效。",
+    "unauthorized": "您尚未登录。请登录以继续。",
+    "forbidden": "您无权访问此资源。",
+    "accountLocked": "您的账户已被锁定。请联系支持团队。",
+    "getMeSuccess": "成功获取账户信息。",
+    "updateMeSuccess": "成功更新个人信息。",
+    "changePasswordSuccess": "密码更改成功。",
+    "invalidCurrentPassword": "当前密码不正确。请检查并重试。",
+    "canNotChangePassword": "当前无法更改密码。请稍后重试。",
+    "invalidOtp": "OTP 码不正确。请重新检查。",
+    "tokenExpired": "令牌已过期。请重新请求。",
+    "forgotPasswordSuccess": "密码重置请求已成功处理。请检查您的邮箱。",
+    "verifyForgotPasswordOtpSuccess": "OTP 码验证成功。请继续重置密码。",
+    "resetPasswordSuccess": "您的密码已成功重置。"
+  },
+  "product": {
+    "createSuccess": "成功创建新产品",
+    "findListSuccess": "成功获取产品列表",
+    "findSuccess": "成功找到产品",
+    "updateSuccess": "成功更新产品",
+    "deleteSuccess": "成功删除产品",
+    "notFound": "未找到产品"
+  },
+  "category": {
+    "createSuccess": "成功创建新类别",
+    "findListSuccess": "成功获取类别列表",
+    "findSuccess": "成功找到类别",
+    "updateSuccess": "成功更新类别",
+    "deleteSuccess": "成功删除类别",
+    "notFound": "未找到类别"
+  },
+  "manufacturer": {
+    "createSuccess": "成功创建新品牌",
+    "findListSuccess": "成功获取品牌列表",
+    "findSuccess": "成功找到品牌",
+    "updateSuccess": "成功更新品牌",
+    "deleteSuccess": "成功删除品牌",
+    "notFound": "未找到品牌"
+  },
+  "address": {
+    "createSuccess": "成功创建新地址",
+    "findListSuccess": "成功获取地址列表",
+    "findSuccess": "成功找到地址",
+    "updateSuccess": "成功更新地址",
+    "deleteSuccess": "成功删除地址",
+    "notFound": "未找到地址"
+  },
+  "cart": {
+    "addToCartSuccess": "成功将产品添加到购物车",
+    "findListSuccess": "成功获取购物车",
+    "clearCartSuccess": "成功清空购物车",
+    "findSuccess": "成功找到品牌",
+    "updateSuccess": "成功更新购物车",
+    "deleteSuccess": "成功从购物车中删除产品",
+    "notFound": "您的购物车中未找到该产品",
+    "maxQuantity": "产品数量不得超过100"
+  },
+  "cartDetail": {
+    "findSuccess": "成功找到购物车详情",
+    "updateSuccess": "成功更新购物车详情",
+    "deleteSuccess": "成功删除购物车详情",
+    "notFound": "您的购物车中未找到该产品"
+  },
+  "favorite": {
+    "addToListSuccess": "成功将产品添加到收藏夹",
+    "deleteSuccess": "成功从收藏夹中删除产品",
+    "findListSuccess": "成功获取收藏夹列表",
+    "findSuccess": "成功找到收藏产品",
+    "clearSuccess": "成功清空收藏夹",
+    "notFound": "未找到收藏产品"
+  },
+  "comment": {
+    "createSuccess": "成功添加新评论",
+    "findListSuccess": "成功获取评论列表",
+    "findSuccess": "成功找到评论",
+    "updateSuccess": "成功更新评论",
+    "deleteSuccess": "成功删除评论",
+    "notFound": "未找到评论",
+    "forbiddenUpdate": "您无权编辑此评论"
+  },
+  "order": {
+    "createSuccess": "成功创建新订单",
+    "findListSuccess": "成功获取订单列表",
+    "updateSuccess": "成功更新订单",
+    "notFound": "未找到订单",
+    "canNotCancelOrder": "您无法取消此订单，因为它不再处于待审核状态",
+    "forbidden": "您无权更新此订单状态",
+    "invalidCart": "购物车无效"
+  },
+  "payment": {
+    "paymentFailure": "处理付款时出错。",
+    "paymentDescription": "{{userId}} - 订单 #{{orderId}} 的付款"
+  },
+  "email": "邮箱",
+  "contact": {
+    "createSuccess": "成功创建新联系人",
+    "findListSuccess": "成功获取联系人列表",
+    "deleteSuccess": "成功删除联系人",
+    "notFound": "未找到联系人",
+    "findSuccess": "成功找到联系人"
+  },
+  "chat": {
+    "createSuccess": "成功创建新对话",
+    "findListSuccess": "成功获取对话列表",
+    "findSuccess": "成功找到对话",
+    "updateSuccess": "成功更新对话",
+    "notFound": "未找到对话"
+  },
+  "visit": "访问",
+  "ai": {
+    "generationSuccess": "成功生成描述",
+    "generationFailure": "生成描述失败",
+    "promptRequired": "需要输入产品信息",
+    "translationSuccess": "成功翻译产品信息",
+    "translationFailure": "翻译产品信息失败"
+  }
+}

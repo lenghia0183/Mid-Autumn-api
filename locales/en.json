@@ -1,37 +1,47 @@
 {
   "system": {
     "resourceNotFound": "Resource not found",
-    "imageTypeInvalid": "Image format not supported",
-    "imageMaxSize": "Image size too large, please choose another one"
+    "imageTypeInvalid": "Unsupported image format",
+    "imageMaxSize": "Image size is too large, please select another"
   },
   "user": {
     "notFound": "User not found",
     "existsEmail": "Email already exists",
     "findSuccess": "User found successfully",
-    "findListSuccess": "Find user list successfully",
+    "findListSuccess": "User list retrieved successfully",
     "createSuccess": "User created successfully",
     "updateSuccess": "User updated successfully",
     "deleteSuccess": "User deleted successfully",
-    "incorrectId": "Incorrect MongoDB Id format",
+    "incorrectId": "Invalid MongoDB ID format",
     "passwordLength": "Password must be longer than 8 characters",
-    "passwordInvalid": "Password must contain at least 1 letter and 1 number",
-    "emailInvalid": "Email is not in the correct format",
-    "roleInvalid": "This role is not valid",
+    "passwordInvalid": "Password must contain at least one letter and one number",
+    "emailInvalid": "Invalid email format",
+    "roleInvalid": "Invalid role",
     "lockedSuccess": "User locked successfully",
     "unlockedSuccess": "User unlocked successfully",
-    "userLocked": "Account locked",
+    "userLocked": "Account is locked",
     "fullnameLength": "Full name must be between 3 and 50 characters",
-    "phoneLength": "Phone number must be between 5 and 12 characters"
+    "phoneLength": "Phone number must be between 8 and 13 characters"
   },
   "auth": {
-    "invalidLogin": "Invalid username or password",
-    "loginSuccess": "Login successfully",
-    "registerSuccess": "Register successfully",
-    "refreshTokenSuccess": "Refresh token successfully",
-    "invalidToken": "Invalid token",
-    "unauthorized": "Unauthorized",
-    "forbidden": "Forbidden",
-    "accountLocked": "Your account has been locked"
+    "invalidLogin": "Incorrect username or password. Please try again.",
+    "loginSuccess": "Login successful!",
+    "registerSuccess": "Account registered successfully!",
+    "refreshTokenSuccess": "Token refreshed successfully.",
+    "invalidToken": "Invalid token.",
+    "unauthorized": "You are not logged in. Please log in to continue.",
+    "forbidden": "You do not have permission to access this resource.",
+    "accountLocked": "Your account is locked. Please contact support.",
+    "getMeSuccess": "Account information retrieved successfully.",
+    "updateMeSuccess": "Personal information updated successfully.",
+    "changePasswordSuccess": "Password changed successfully.",
+    "invalidCurrentPassword": "Current password is incorrect. Please try again.",
+    "canNotChangePassword": "Unable to change password at this time. Please try again later.",
+    "invalidOtp": "Invalid OTP. Please check again.",
+    "tokenExpired": "Token has expired. Please request a new one.",
+    "forgotPasswordSuccess": "Password reset request processed successfully. Please check your email.",
+    "verifyForgotPasswordOtpSuccess": "OTP verified successfully. Proceed to reset password.",
+    "resetPasswordSuccess": "Your password has been reset successfully."
   },
   "product": {
     "createSuccess": "Product created successfully",
@@ -50,32 +60,86 @@
     "notFound": "Category not found"
   },
   "manufacturer": {
-    "createSuccess": "manufacturer created successfully",
-    "findListSuccess": "manufacturer list retrieved successfully",
-    "findSuccess": "manufacturer found successfully",
-    "updateSuccess": "manufacturer updated successfully",
-    "deleteSuccess": "manufacturer deleted successfully",
-    "notFound": "manufacturer not found"
+    "createSuccess": "Brand created successfully",
+    "findListSuccess": "Brand list retrieved successfully",
+    "findSuccess": "Brand found successfully",
+    "updateSuccess": "Brand updated successfully",
+    "deleteSuccess": "Brand deleted successfully",
+    "notFound": "Brand not found"
   },
   "address": {
-    "createSuccess": "address created successfully",
-    "findListSuccess": "address list retrieved successfully",
-    "findSuccess": "address found successfully",
-    "updateSuccess": "address updated successfully",
-    "deleteSuccess": "address deleted successfully",
-    "notFound": "address not found"
+    "createSuccess": "Address created successfully",
+    "findListSuccess": "Address list retrieved successfully",
+    "findSuccess": "Address found successfully",
+    "updateSuccess": "Address updated successfully",
+    "deleteSuccess": "Address deleted successfully",
+    "notFound": "Address not found"
   },
   "cart": {
-    "createSuccess": "manufacturer created successfully",
-    "findListSuccess": "manufacturer list retrieved successfully",
-    "findSuccess": "manufacturer found successfully",
-    "updateSuccess": "manufacturer updated successfully",
-    "deleteSuccess": "manufacturer deleted successfully",
-    "notFound": "manufacturer not found"
+    "addToCartSuccess": "Product added to cart successfully",
+    "findListSuccess": "Cart retrieved successfully",
+    "clearCartSuccess": "Cart cleared successfully",
+    "findSuccess": "Brand found successfully",
+    "updateSuccess": "Cart updated successfully",
+    "deleteSuccess": "Product removed from cart successfully",
+    "notFound": "Product not found in your cart",
+    "maxQuantity": "Product quantity cannot exceed 100"
   },
+  "cartDetail": {
+    "findSuccess": "Cart details retrieved successfully",
+    "updateSuccess": "Cart details updated successfully",
+    "deleteSuccess": "Cart details deleted successfully",
+    "notFound": "Product not found in your cart"
+  },
+  "favorite": {
+    "addToListSuccess": "Product added to favorites successfully",
+    "deleteSuccess": "Product removed from favorites successfully",
+    "findListSuccess": "Favorites list retrieved successfully",
+    "findSuccess": "Favorite product found successfully",
+    "clearSuccess": "Favorites list cleared successfully",
+    "notFound": "Favorite product not found"
+  },
+  "comment": {
+    "createSuccess": "Comment added successfully",
+    "findListSuccess": "Comment list retrieved successfully",
+    "findSuccess": "Comment found successfully",
+    "updateSuccess": "Comment updated successfully",
+    "deleteSuccess": "Comment deleted successfully",
+    "notFound": "Comment not found",
+    "forbiddenUpdate": "You do not have permission to edit this comment"
+  },
+  "order": {
+    "createSuccess": "Order created successfully",
+    "findListSuccess": "Order list retrieved successfully",
+    "updateSuccess": "Order updated successfully",
+    "notFound": "Order not found",
+    "canNotCancelOrder": "You cannot cancel this order as it is no longer in pending status",
+    "forbidden": "You do not have permission to update this order's status",
+    "invalidCart": "Invalid cart"
+  },
+  "payment": {
+    "paymentFailure": "Error processing payment.",
+    "paymentDescription": "{{userId}} - Payment for order #{{orderId}}"
+  },
+  "email": "email",
+  "contact": {
+    "createSuccess": "Contact created successfully",
+    "findListSuccess": "Contact list retrieved successfully",
+    "deleteSuccess": "Contact deleted successfully",
+    "notFound": "Contact not found",
+    "findSuccess": "Contact found successfully"
+  },
+  "chat": {
+    "createSuccess": "Conversation created successfully",
+    "findListSuccess": "Conversation list retrieved successfully",
+    "findSuccess": "Conversation found successfully",
+    "updateSuccess": "Conversation updated successfully",
+    "notFound": "Conversation not found"
+  },
+  "visit": "visit",
   "ai": {
-    "generationSuccess": "Product description generated successfully",
-    "generationFailure": "Failed to generate product description",
+    "generationSuccess": "Description generated successfully",
+    "generationFailure": "Failed to generate description",
     "promptRequired": "Product information is required",
     "translationSuccess": "Product information translated successfully",
     "translationFailure": "Failed to translate product information"

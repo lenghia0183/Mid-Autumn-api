@@ -1,0 +1,147 @@
+{
+  "system": {
+    "resourceNotFound": "リソースが見つかりません",
+    "imageTypeInvalid": "サポートされていない画像形式",
+    "imageMaxSize": "画像のサイズが大きすぎます。別の画像を選択してください"
+  },
+  "user": {
+    "notFound": "ユーザーが見つかりません",
+    "existsEmail": "このメールアドレスはすでに存在します",
+    "findSuccess": "ユーザーが正常に見つかりました",
+    "findListSuccess": "ユーザーリストの取得に成功しました",
+    "createSuccess": "ユーザーの作成に成功しました",
+    "updateSuccess": "ユーザーの更新に成功しました",
+    "deleteSuccess": "ユーザーの削除に成功しました",
+    "incorrectId": "MongoDBのID形式が正しくありません",
+    "passwordLength": "パスワードは8文字以上である必要があります",
+    "passwordInvalid": "パスワードには少なくとも1つの文字と1つの数字が必要です",
+    "emailInvalid": "メールアドレスの形式が正しくありません",
+    "roleInvalid": "この役割は正しくありません",
+    "lockedSuccess": "ユーザーのロックに成功しました",
+    "unlockedSuccess": "ユーザーのロック解除に成功しました",
+    "userLocked": "アカウントがロックされています",
+    "fullnameLength": "フルネームは3～50文字である必要があります",
+    "phoneLength": "電話番号は8～13文字である必要があります"
+  },
+  "auth": {
+    "invalidLogin": "ユーザー名またはパスワードが正しくありません。もう一度お試しください。",
+    "loginSuccess": "ログインに成功しました！",
+    "registerSuccess": "アカウントの登録に成功しました！",
+    "refreshTokenSuccess": "トークンの更新に成功しました。",
+    "invalidToken": "無効なトークンです。",
+    "unauthorized": "ログインしていません。続行するにはログインしてください。",
+    "forbidden": "このリソースにアクセスする権限がありません。",
+    "accountLocked": "あなたのアカウントはロックされています。サポートに連絡してください。",
+    "getMeSuccess": "アカウント情報の取得に成功しました。",
+    "updateMeSuccess": "個人情報の更新に成功しました。",
+    "changePasswordSuccess": "パスワードの変更に成功しました。",
+    "invalidCurrentPassword": "現在のパスワードが正しくありません。確認して再試行してください。",
+    "canNotChangePassword": "現在パスワードを変更できません。後でもう一度お試しください。",
+    "invalidOtp": "OTPコードが正しくありません。もう一度確認してください。",
+    "tokenExpired": "トークンの有効期限が切れました。新しいトークンをリクエストしてください。",
+    "forgotPasswordSuccess": "パスワードリセットのリクエストが正常に処理されました。メールを確認してください。",
+    "verifyForgotPasswordOtpSuccess": "OTPコードの検証に成功しました。パスワードリセットに進んでください。",
+    "resetPasswordSuccess": "パスワードが正常にリセットされました。"
+  },
+  "product": {
+    "createSuccess": "商品の作成に成功しました",
+    "findListSuccess": "商品リストの取得に成功しました",
+    "findSuccess": "商品が見つかりました",
+    "updateSuccess": "商品の更新に成功しました",
+    "deleteSuccess": "商品の削除に成功しました",
+    "notFound": "商品が見つかりません"
+  },
+  "category": {
+    "createSuccess": "カテゴリーの作成に成功しました",
+    "findListSuccess": "カテゴリーリストの取得に成功しました",
+    "findSuccess": "カテゴリーが見つかりました",
+    "updateSuccess": "カテゴリーの更新に成功しました",
+    "deleteSuccess": "カテゴリーの削除に成功しました",
+    "notFound": "カテゴリーが見つかりません"
+  },
+  "manufacturer": {
+    "createSuccess": "ブランドの作成に成功しました",
+    "findListSuccess": "ブランドリストの取得に成功しました",
+    "findSuccess": "ブランドが見つかりました",
+    "updateSuccess": "ブランドの更新に成功しました",
+    "deleteSuccess": "ブランドの削除に成功しました",
+    "notFound": "ブランドが見つかりません"
+  },
+  "address": {
+    "createSuccess": "住所の作成に成功しました",
+    "findListSuccess": "住所リストの取得に成功しました",
+    "findSuccess": "住所が見つかりました",
+    "updateSuccess": "住所の更新に成功しました",
+    "deleteSuccess": "住所の削除に成功しました",
+    "notFound": "住所が見つかりません"
+  },
+  "cart": {
+    "addToCartSuccess": "商品がカートに追加されました",
+    "findListSuccess": "カートの取得に成功しました",
+    "clearCartSuccess": "カートのクリアに成功しました",
+    "findSuccess": "ブランドが見つかりました",
+    "updateSuccess": "カートの更新に成功しました",
+    "deleteSuccess": "商品がカートから削除されました",
+    "notFound": "カートに商品が見つかりません",
+    "maxQuantity": "商品の数量は100を超えることはできません"
+  },
+  "cartDetail": {
+    "findSuccess": "カートの詳細の取得に成功しました",
+    "updateSuccess": "カートの詳細の更新に成功しました",
+    "deleteSuccess": "カートの詳細の削除に成功しました",
+    "notFound": "カートに商品が見つかりません"
+  },
+  "favorite": {
+    "addToListSuccess": "商品がお気に入りに追加されました",
+    "deleteSuccess": "商品がお気に入りから削除されました",
+    "findListSuccess": "お気に入りリストの取得に成功しました",
+    "findSuccess": "お気に入り商品が見つかりました",
+    "clearSuccess": "お気に入りリストのクリアに成功しました",
+    "notFound": "お気に入り商品が見つかりません"
+  },
+  "comment": {
+    "createSuccess": "コメントの追加に成功しました",
+    "findListSuccess": "コメントリストの取得に成功しました",
+    "findSuccess": "コメントが見つかりました",
+    "updateSuccess": "コメントの更新に成功しました",
+    "deleteSuccess": "コメントの削除に成功しました",
+    "notFound": "コメントが見つかりません",
+    "forbiddenUpdate": "このコメントを編集する権限がありません"
+  },
+  "order": {
+    "createSuccess": "注文の作成に成功しました",
+    "findListSuccess": "注文リストの取得に成功しました",
+    "updateSuccess": "注文の更新に成功しました",
+    "notFound": "注文が見つかりません",
+    "canNotCancelOrder": "この注文は保留状態ではないためキャンセルできません",
+    "forbidden": "この注文の状態を更新する権限がありません",
+    "invalidCart": "無効なカートです"
+  },
+  "payment": {
+    "paymentFailure": "支払い処理中にエラーが発生しました。",
+    "paymentDescription": "{{userId}} - 注文 #{{orderId}} の支払い"
+  },
+  "email": "メール",
+  "contact": {
+    "createSuccess": "連絡先の作成に成功しました",
+    "findListSuccess": "連絡先リストの取得に成功しました",
+    "deleteSuccess": "連絡先の削除に成功しました",
+    "notFound": "連絡先が見つかりません",
+    "findSuccess": "連絡先が見つかりました"
+  },
+  "chat": {
+    "createSuccess": "会話の作成に成功しました",
+    "findListSuccess": "会話リストの取得に成功しました",
+    "findSuccess": "会話が見つかりました",
+    "updateSuccess": "会話の更新に成功しました",
+    "notFound": "会話が見つかりません"
+  },
+  "visit": "訪問",
+  "ai": {
+    "generationSuccess": "説明の生成に成功しました",
+    "generationFailure": "説明の生成に失敗しました",
+    "promptRequired": "商品情報の入力が必要です",
+    "translationSuccess": "商品情報の翻訳に成功しました",
+    "translationFailure": "商品情報の翻訳に失敗しました"
+  }
+}
